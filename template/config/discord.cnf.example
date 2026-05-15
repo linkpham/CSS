@@ -1,0 +1,19 @@
+# Copy this file to config/discord.cnf and fill real values.
+# Hoặc inject bằng env vars trong CI:
+#   DISCORD_WEBHOOK_URL / DISCORD_WEBHOOK_ID / DISCORD_WEBHOOK_TOKEN
+#   DISCORD_BOT_TOKEN / DISCORD_CHANNEL_ID / DISCORD_MENTIONS / DISCORD_USERNAME
+
+# Preferred:
+# WEBHOOK_URL=https://discord.com/api/webhooks/<id>/<token>
+
+# Backward-compatible:
+WEBHOOK_ID=YOUR_WEBHOOK_ID
+WEBHOOK_TOKEN=YOUR_WEBHOOK_TOKEN
+
+# Optional bot fallback:
+TOKEN=YOUR_BOT_TOKEN
+CHANNEL_ID=YOUR_CHANNEL_ID
+
+CHANNEL=
+MENTIONS=
+USERNAME=

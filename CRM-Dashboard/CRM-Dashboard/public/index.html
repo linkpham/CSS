@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>CSI / CRM Dashboard</title>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/html2canvas@1.4.1/dist/html2canvas.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/jspdf@2.5.1/dist/jspdf.umd.min.js"></script>
+    <style>
+        :root {
+            --bg: #f4f7fb;
+            --card: #ffffff;
+            --text: #172033;
+            --muted: #667085;
+            --border: #e5e7eb;
+            --primary: #2563eb;
+            --danger: #dc2626;
+            --success: #16a34a;
+            --warning: #d97706;
+        }
+        * { box-sizing: border-box; }
+        body { margin: 0; font-family: Inter, Arial, sans-serif; background: var(--bg); color: var(--text); }
+        header { padding: 24px 28px 12px; }
+        h1 { margin: 0; font-size: 28px; }
+        .subtitle { color: var(--muted); margin-top: 6px; }
+        .container { padding: 12px 28px 32px; }
+        .toolbar, .card { background: var(--card); border: 1px solid var(--border); border-radius: 14px; box-shadow: 0 8px 24px rgba(15,23,42,.06); }
+        .toolbar { padding: 16px; display: grid; grid-template-columns: repeat(4, minmax(160px, 1fr)); gap: 12px; align-items: end; }
+        label { display: block; font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+        select, input { width: 100%; padding: 9px 10px; border: 1px solid var(--border); border-radius: 10px; background: #fff; }
+        button { padding: 10px 14px; border: 0; border-radius: 10px; background: var(--primary); color: #fff; cursor: pointer; font-weight: 600; }
+        button.secondary { background: #475569; }
+        button.success { background: var(--success); }
+        body.exporting .no-export { display: none !important; }
+        body.exporting .toolbar { grid-template-columns: repeat(3, minmax(160px, 1fr)); }
+        body.exporting { background: #fff; }
+        .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-top: 16px; }
+        .kpi { padding: 16px; }
+        .kpi-title { color: var(--muted); font-size: 13px; }
+        .kpi-value { font-size: 25px; font-weight: 800; margin-top: 8px; }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-top: 16px; }
+        .grid-3 { display: grid; grid-template-columns: 1.3fr 1fr .9fr; gap: 16px; margin-top: 16px; }
+        .card { padding: 16px; min-height: 0; overflow: hidden; }
+        .chart-card { height: 380px; display: flex; flex-direction: column; }
+        .chart-card.compact { height: 340px; }
+        .chart-card.wide { height: 420px; }
+        .chart-box { position: relative; flex: 1; min-height: 0; height: 300px; }
+        .chart-box canvas { width: 100% !important; height: 100% !important; }
+        .table-card { max-height: 420px; overflow: auto; }
+        .card h2 { margin: 0 0 12px; font-size: 18px; }
+        .status { margin-top: 12px; font-size: 13px; color: var(--muted); }
+        table { width: 100%; border-collapse: collapse; font-size: 13px; }
+        th, td { padding: 9px; border-bottom: 1px solid var(--border); text-align: left; }
+        th { color: var(--muted); font-weight: 600; }
+        .error { color: var(--danger); font-weight: 600; }
+        @media (max-width: 1100px) { .toolbar, .kpis, .grid-2, .grid-3 { grid-template-columns: 1fr; } }
+        @media print {
+            body { background: #fff; }
+            .no-export { display: none !important; }
+            header, .container { padding: 10px; }
+            .card, .toolbar { box-shadow: none; break-inside: avoid; }
+            .grid-2, .grid-3, .kpis { break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>CSI / CRM Dashboard</h1>
+        <div class="subtitle">Google Sheet → Sync job → SQLite Database → Dashboard realtime</div>
+        <div id="status" class="status">Đang kết nối...</div>
+    </header>
+
+    <main class="container">
+        <section class="toolbar">
+            <div><label>Quý</label><select id="quarterFilter"></select></div>
+            <div><label>Tháng</label><select id="monthFilter"></select></div>
+            <div><label>Từ ngày</label><input id="fromDateFilter" type="date" /></div>
+            <div><label>Đến ngày</label><input id="toDateFilter" type="date" /></div>
+            <div><label>Nhóm Health Movement</label><select id="healthMovementGroupFilter"></select></div>
+            <div><label>CSS / người chăm sóc</label><select id="cssFilter"></select></div>
+            <div><label>Nhóm chuyển dịch chi tiết</label><select id="groupFilter"></select></div>
+            <div><label>Phân loại Target</label><select id="targetCategoryFilter"></select></div>
+            <div><label>Phân loại Base</label><select id="baseCategoryFilter"></select></div>
+            <div><label>Trạng thái gia hạn</label><select id="renewalStatusFilter"></select></div>
+            <div><label>Sản phẩm gia hạn</label><select id="productFilter"></select></div>
+            <div><label>Vòng đời</label><select id="lifecycleStatusFilter"></select></div>
+            <div class="no-export" style="display:flex; gap:8px; align-items:end; flex-wrap: wrap;">
+                <button onclick="applyFilters()">Áp dụng</button>
+                <button class="secondary" onclick="resetFilters()">Reset</button>
+                <button class="success" onclick="exportDashboardPDF()">Xuất PDF</button>
+            </div>
+        </section>
+
+        <section class="kpis">
+            <div class="card kpi"><div class="kpi-title">Tổng học viên</div><div class="kpi-value" id="totalStudents">-</div></div>
+            <div class="card kpi"><div class="kpi-title">Điểm Target TB</div><div class="kpi-value" id="avgScoreTarget">-</div></div>
+            <div class="card kpi"><div class="kpi-title">Tỷ lệ phục hồi/cải thiện</div><div class="kpi-value" id="recoveryRate">-</div></div>
+            <div class="card kpi"><div class="kpi-title">Tỷ lệ trượt dốc</div><div class="kpi-value" id="slippageRate">-</div></div>
+            <div class="card kpi"><div class="kpi-title">Renewal Rate</div><div class="kpi-value" id="renewalRate">-</div></div>
+            <div class="card kpi"><div class="kpi-title">Cash Revenue</div><div class="kpi-value" id="cashRevenue">-</div></div>
+            <div class="card kpi"><div class="kpi-title">Forecast Revenue</div><div class="kpi-value" id="forecastRevenue">-</div></div>
+            <div class="card kpi"><div class="kpi-title">Số dòng sau lọc</div><div class="kpi-value" id="rowCount">-</div></div>
+        </section>
+
+        <section class="grid-2">
+            <div class="card chart-card"><h2>Health Movement - 6 nhóm gộp</h2><div class="chart-box"><canvas id="movementChart"></canvas></div></div>
+            <div class="card chart-card"><h2>Phân loại sức khỏe Target</h2><div class="chart-box"><canvas id="targetHealthChart"></canvas></div></div>
+        </section>
+
+        <section class="grid-3">
+            <div class="card chart-card wide"><h2>Nhóm chuyển dịch chi tiết</h2><div class="chart-box"><canvas id="detailedGroupChart"></canvas></div></div>
+            <div class="card chart-card compact"><h2>Renewal Status</h2><div class="chart-box"><canvas id="renewalChart"></canvas></div></div>
+            <div class="card"><h2>Care / Operation</h2>
+                <table>
+                    <tbody>
+                        <tr><th>GV disruption TB</th><td id="avgTeacherDisruptionRate">-</td></tr>
+                        <tr><th>Học dở TB</th><td id="avgUnfinishedRate">-</td></tr>
+                        <tr><th>Avg renewal revenue</th><td id="avgRenewalRevenue">-</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+
+        <section class="grid-2">
+            <div class="card table-card"><h2>Forecast theo tệp sức khỏe</h2><table id="forecastTable"></table></div>
+            <div class="card table-card"><h2>Renewal Rate theo sức khỏe</h2><table id="renewalRateTable"></table></div>
+        </section>
+    </main>
+
+    <script>
+        const socket = io();
+        const charts = {};
+        let latestOptions = null;
+
+        function truncateLabel(value, max = 22) {
+            const text = String(value || '');
+            return text.length > max ? `${text.slice(0, max)}…` : text;
+        }
+
+        function makeChart(id, type, label, extraOptions = {}) {
+            const ctx = document.getElementById(id).getContext('2d');
+            const isCircular = type === 'pie' || type === 'doughnut';
+            return new Chart(ctx, {
+                type,
+                data: { labels: [], datasets: [{ label, data: [], backgroundColor: ['#2563eb','#dc2626','#16a34a','#d97706','#7c3aed','#0891b2','#db2777','#475569','#65a30d','#ea580c'] }] },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    animation: false,
+                    resizeDelay: 150,
+                    ...extraOptions,
+                    plugins: {
+                        legend: { display: isCircular, position: 'bottom', labels: { boxWidth: 12, font: { size: 11 } } },
+                        tooltip: {
+                            callbacks: {
+                                title: items => items.map(i => i.label).join(', ')
+                            }
+                        },
+                        ...(extraOptions.plugins || {})
+                    },
+                    scales: isCircular ? undefined : {
+                        x: { ticks: { autoSkip: true, maxRotation: 0, callback: function(value) { return truncateLabel(this.getLabelForValue ? this.getLabelForValue(value) : value, 18); } } },
+                        y: { ticks: { callback: function(value) { return truncateLabel(this.getLabelForValue ? this.getLabelForValue(value) : value, 26); } } },
+                        ...(extraOptions.scales || {})
+                    }
+                }
+            });
+        }
+
+        charts.movement = makeChart('movementChart', 'doughnut', 'Số HV');
+        charts.target = makeChart('targetHealthChart', 'bar', 'Số HV');
+        charts.detail = makeChart('detailedGroupChart', 'bar', 'Số HV', { indexAxis: 'y' });
+        charts.renewal = makeChart('renewalChart', 'pie', 'Số HV');
+
+        function setStatus(text, isError = false) {
+            const el = document.getElementById('status');
+            el.textContent = text;
+            el.className = isError ? 'status error' : 'status';
+        }
+
+        function fillSelect(id, values) {
+            const select = document.getElementById(id);
+            const current = select.value;
+            select.innerHTML = '<option value="">Tất cả</option>' + (values || []).map(v => `<option value="${String(v).replaceAll('"','&quot;')}">${v}</option>`).join('');
+            if ([...select.options].some(o => o.value === current)) select.value = current;
+        }
+
+        function hydrateFilters(options) {
+            if (!options) return;
+            latestOptions = options;
+            fillSelect('quarterFilter', options.quarter);
+            fillSelect('monthFilter', options.month);
+            fillSelect('healthMovementGroupFilter', options.healthMovementGroup);
+            fillSelect('cssFilter', options.css);
+            fillSelect('groupFilter', options.group);
+            fillSelect('targetCategoryFilter', options.targetCategory);
+            fillSelect('baseCategoryFilter', options.baseCategory);
+            fillSelect('renewalStatusFilter', options.renewalStatus);
+            fillSelect('productFilter', options.product);
+            fillSelect('lifecycleStatusFilter', options.lifecycleStatus);
+        }
+
+        function getFilters() {
+            return {
+                quarter: document.getElementById('quarterFilter').value,
+                month: document.getElementById('monthFilter').value,
+                fromDate: document.getElementById('fromDateFilter').value,
+                toDate: document.getElementById('toDateFilter').value,
+                healthMovementGroup: document.getElementById('healthMovementGroupFilter').value,
+                css: document.getElementById('cssFilter').value,
+                group: document.getElementById('groupFilter').value,
+                targetCategory: document.getElementById('targetCategoryFilter').value,
+                baseCategory: document.getElementById('baseCategoryFilter').value,
+                renewalStatus: document.getElementById('renewalStatusFilter').value,
+                product: document.getElementById('productFilter').value,
+                lifecycleStatus: document.getElementById('lifecycleStatusFilter').value,
+            };
+        }
+
+        function applyFilters() { socket.emit('setFilters', getFilters()); }
+        function resetFilters() {
+            ['quarterFilter','monthFilter','fromDateFilter','toDateFilter','healthMovementGroupFilter','cssFilter','groupFilter','targetCategoryFilter','baseCategoryFilter','renewalStatusFilter','productFilter','lifecycleStatusFilter'].forEach(id => document.getElementById(id).value = '');
+            applyFilters();
+        }
+
+        function buildPdfFileName() {
+            const now = new Date();
+            const stamp = now.toISOString().slice(0, 19).replace(/[:T]/g, '-');
+            return `CSI-CRM-Dashboard-${stamp}.pdf`;
+        }
+
+        async function exportDashboardPDF() {
+            try {
+                if (!window.html2canvas || !window.jspdf?.jsPDF) {
+                    window.print();
+                    return;
+                }
+                setStatus('Đang tạo PDF, vui lòng chờ...');
+                document.body.classList.add('exporting');
+                await new Promise(resolve => requestAnimationFrame(resolve));
+
+                const target = document.querySelector('main.container');
+                const canvas = await html2canvas(target, {
+                    scale: 2,
+                    useCORS: true,
+                    backgroundColor: '#f4f7fb',
+                    windowWidth: document.documentElement.scrollWidth,
+                    windowHeight: document.documentElement.scrollHeight,
+                    logging: false,
+                });
+
+                const { jsPDF } = window.jspdf;
+                const pdf = new jsPDF('p', 'mm', 'a4');
+                const pageWidth = pdf.internal.pageSize.getWidth();
+                const pageHeight = pdf.internal.pageSize.getHeight();
+                const margin = 8;
+                const printableWidth = pageWidth - margin * 2;
+                const printableHeight = pageHeight - margin * 2;
+                const imgWidth = printableWidth;
+                const imgHeight = (canvas.height * imgWidth) / canvas.width;
+                const imgData = canvas.toDataURL('image/png', 0.95);
+
+                let heightLeft = imgHeight;
+                let y = margin;
+                pdf.addImage(imgData, 'PNG', margin, y, imgWidth, imgHeight, undefined, 'FAST');
+                heightLeft -= printableHeight;
+
+                while (heightLeft > 0) {
+                    pdf.addPage();
+                    y = margin - (imgHeight - heightLeft);
+                    pdf.addImage(imgData, 'PNG', margin, y, imgWidth, imgHeight, undefined, 'FAST');
+                    heightLeft -= printableHeight;
+                }
+
+                pdf.save(buildPdfFileName());
+                setStatus(`Đã xuất PDF ${new Date().toLocaleTimeString('vi-VN')}`);
+            } catch (error) {
+                console.error('Export PDF failed:', error);
+                setStatus(`Xuất PDF lỗi: ${error.message}`, true);
+            } finally {
+                document.body.classList.remove('exporting');
+            }
+        }
+
+        function updateChart(chart, counts, limit = 12) {
+            const entries = Object.entries(counts || {})
+                .sort((a, b) => Number(b[1]) - Number(a[1]))
+                .slice(0, limit);
+            chart.data.labels = entries.map(([k]) => k);
+            chart.data.datasets[0].data = entries.map(([, v]) => v);
+            chart.update('none');
+        }
+
+        function renderTable(id, headers, rows) {
+            document.getElementById(id).innerHTML = '<thead><tr>' + headers.map(h => `<th>${h}</th>`).join('') + '</tr></thead><tbody>' +
+                rows.map(row => '<tr>' + row.map(cell => `<td>${cell}</td>`).join('') + '</tr>').join('') + '</tbody>';
+        }
+
+        function render(data) {
+            if (!data || !data.overview) return;
+            hydrateFilters(data.filterOptions);
+            document.getElementById('totalStudents').textContent = data.overview.totalStudents;
+            document.getElementById('avgScoreTarget').textContent = data.overview.avgScoreTarget;
+            document.getElementById('recoveryRate').textContent = data.overview.recoveryRate;
+            document.getElementById('slippageRate').textContent = data.overview.slippageRate;
+            document.getElementById('renewalRate').textContent = data.overview.renewalRate;
+            document.getElementById('cashRevenue').textContent = data.overview.cashRevenue;
+            document.getElementById('forecastRevenue').textContent = data.overview.forecastRevenue;
+            document.getElementById('rowCount').textContent = `${data.rowCount}/${data.totalCachedRows}`;
+            document.getElementById('avgTeacherDisruptionRate').textContent = data.careEffectiveness.avgTeacherDisruptionRate;
+            document.getElementById('avgUnfinishedRate').textContent = data.careEffectiveness.avgUnfinishedRate;
+            document.getElementById('avgRenewalRevenue').textContent = data.forecast.avgRenewalRevenue;
+
+            updateChart(charts.movement, data.healthMovement.counts, 8);
+            updateChart(charts.target, data.healthMovement.targetHealthCounts, 8);
+            updateChart(charts.detail, data.healthMovement.detailedCounts, 10);
+            updateChart(charts.renewal, data.renewalCorrelation.renewalStatusCounts, 8);
+
+            renderTable('forecastTable', ['Tệp sức khỏe', 'Số HV', 'RR giả định', 'Forecast'], (data.forecast.byHealth || []).map(r => [r.category, r.students, r.defaultRenewalRate, r.forecastRevenue]));
+            renderTable('renewalRateTable', ['Tệp sức khỏe', 'Renewal Rate'], Object.entries(data.renewalCorrelation.renewalRateByHealth || {}));
+            setStatus(`Đã cập nhật ${new Date().toLocaleTimeString('vi-VN')} • Sync: ${data.lastSyncedAt || 'N/A'}`);
+        }
+
+        socket.on('connect', () => setStatus('Đã kết nối realtime, đang tải dữ liệu...'));
+        socket.on('dataUpdate', render);
+        socket.on('dashboardError', err => setStatus(err.error || 'Dashboard error', true));
+        socket.on('connect_error', err => setStatus(`Socket lỗi: ${err.message}. Sẽ dùng API fallback.`, true));
+
+        fetch('/api/dashboard')
+            .then(res => res.json())
+            .then(render)
+            .catch(err => setStatus(`API lỗi: ${err.message}`, true));
+    </script>
+</body>
+</html>
