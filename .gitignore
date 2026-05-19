@@ -1,6 +1,7 @@
 # Dependencies
 node_modules/
-
+.dm/
+.m/
 # Credentials / secrets
 conf/
 **/conf/credentials.json

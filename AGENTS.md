@@ -7,6 +7,26 @@ Agent trong template này phải dựa trên toàn bộ dữ liệu trong `excel
 Dashboard phải đạt chất lượng enterprise-grade: responsive cho desktop/mobile, tối ưu readability, có loading/empty/error states, có dark/light mode nếu phù hợp, và ưu tiên trải nghiệm hỗ trợ ra quyết định thay vì chỉ hiển thị dữ liệu.
 
 ---
+## Cấu trúc:
+```
+CRM-Dashboard/
+├── CRM-Dashboard/
+├── zeus/
+│   ├── zeus_core.sql    (schema và dữ liệu mẫu của CSDL Zeus)
+│   ├── core/    (chứa mã nguồn tham khảo để hiểu được các nghiệp vụ và các kết nối CSDL thông qua schema zeus_core.sql)
+├── docs/
+│   ├── regression/    (thư mục chứa các tệp yêu cầu sửa lỗi)
+│   ├── specs/         (thư mục chứa các tệp spec )
+│   ├── runbooks/      (ghi lại những yêu cầu đã thực hiện)
+├── scripts/
+│   ├── build.sh       (build/compile web)
+│   └── deploy.sh      (deploy CRM-Dashboard và run web)
+├── conf/              (chứa các credentials) 
+├── dist/              (kết quả được build) 
+└── README.md          (hướng dẫn sử dụng do người dùng tự điền)
+```
+
+---
 
 ## 1. Working contract bắt buộc
 
