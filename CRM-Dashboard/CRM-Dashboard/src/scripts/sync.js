@@ -2,7 +2,7 @@
 const { getSheetData } = require('../services/gsheetService');
 const db = require('../db/database');
 
-const SPREADSHEET_ID = process.env.SPREADSHEET_ID || '1t46BJhDlgB8BYRlx29x5GeB-Gd3A4Jolzm87OZhYdAQ';
+const SPREADSHEET_ID = process.env.SPREADSHEET_ID || '1CHXlpCmanz8BxvPg91898g_aFoMKKIWx-16n0SyM3wY';
 const SHEET_NAME = process.env.SHEET_NAME || 'Data_Model';
 const SYNC_INTERVAL_MS = Number(process.env.SYNC_INTERVAL_MS || 5 * 60 * 1000);
 

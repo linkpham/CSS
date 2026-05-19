@@ -1,14 +1,15 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-SSH_KEY="${SSH_KEY:-conf/ssh-key}"
+APP_DIR="${APP_DIR:-CRM-Dashboard/CRM-Dashboard}"
+CONF_DIR="${CONF_DIR:-CRM-Dashboard/conf}"
+SSH_KEY="${SSH_KEY:-$CONF_DIR/ssh-key}"
 SSH_USER="${SSH_USER:-quenn}"
 SSH_HOST="${SSH_HOST:-13.215.57.82}"
 REMOTE_DIR="${REMOTE_DIR:-/var/www/icc-crm}"
 DOMAIN="${DOMAIN:-crm.icanwork.vn}"
 CERTBOT_EMAIL="${CERTBOT_EMAIL:-admin@icanwork.vn}"
 
-APP_DIR="CRM-Dashboard/CRM-Dashboard"
 SCRIPT_PATH="${BASH_SOURCE[0]}"
 PROXY_DIR="${PROXY_DIR:-/var/www/zeus-dashboard}"
 PROXY_COMPOSE_FILE="$PROXY_DIR/docker-compose.yml"
@@ -41,12 +42,12 @@ rsync -az -e "ssh -i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=accept-n
   "$SCRIPT_PATH" "$REMOTE:$REMOTE_DIR/DEPLOY_SERVER.sh"
 
 ssh "${SSH_OPTS[@]}" "$REMOTE" "mkdir -p '$REMOTE_DIR/conf' '$REMOTE_DIR/data'"
-if [ -f conf/credentials.json ]; then
+if [ -f "$CONF_DIR/credentials.json" ]; then
   log "Upload Google service-account credentials"
   rsync -az -e "ssh -i $SSH_KEY -o BatchMode=yes -o StrictHostKeyChecking=accept-new" \
-    conf/credentials.json "$REMOTE:$REMOTE_DIR/conf/credentials.json"
+    "$CONF_DIR/credentials.json" "$REMOTE:$REMOTE_DIR/conf/credentials.json"
 else
-  log "Skip conf/credentials.json: file not found locally. Sync job will need this later."
+  log "Skip $CONF_DIR/credentials.json: file not found locally. Sync job will need this later."
 fi
 
 log "Install/verify Docker, Certbot, and shared proxy prerequisites"
@@ -85,9 +86,9 @@ docker network inspect "$PROXY_NETWORK" >/dev/null 2>&1 || die "Missing Docker p
 [ -f "$PROXY_COMPOSE_FILE" ] || die "Missing proxy compose file: $PROXY_COMPOSE_FILE"
 [ -d "$PROXY_NGINX_CONF_DIR" ] || die "Missing proxy nginx conf dir: $PROXY_NGINX_CONF_DIR"
 
-log "Build/start CRM app container"
+log "Build/start CRM containers"
 cd "$REMOTE_DIR"
-docker compose up -d --build app
+docker compose up -d --build
 
 log "Prepare proxy volumes for ACME/HTTPS"
 sudo mkdir -p "$PROXY_CERTBOT_WEBROOT"

@@ -1,0 +1,47 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: icc-crm-app
+    restart: unless-stopped
+    environment:
+      NODE_ENV: production
+      HOST: 0.0.0.0
+      PORT: 3000
+      CRM_DB_DIR: /app/data
+      DATA_CACHE_TTL_MS: ${DATA_CACHE_TTL_MS:-15000}
+      BOOTSTRAP_HEAD_EMAIL: ${BOOTSTRAP_HEAD_EMAIL:-head@crm.local}
+      BOOTSTRAP_HEAD_PASSWORD: ${BOOTSTRAP_HEAD_PASSWORD:-Head@123456}
+    volumes:
+      - ./data:/app/data
+      - ./conf:/app/conf:ro
+    networks:
+      default:
+      proxy-net:
+        aliases:
+          - icc-crm-app
+
+  sync:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: icc-crm-sync
+    restart: unless-stopped
+    command: ["/bin/sh", "./scripts/sync-loop.sh"]
+    environment:
+      NODE_ENV: production
+      CRM_DB_DIR: /app/data
+      SPREADSHEET_ID: ${SPREADSHEET_ID:-1CHXlpCmanz8BxvPg91898g_aFoMKKIWx-16n0SyM3wY}
+      SHEET_NAME: ${SHEET_NAME:-Data_Model}
+      SYNC_INTERVAL_MS: ${SYNC_INTERVAL_MS:-300000}
+    volumes:
+      - ./data:/app/data
+      - ./conf:/app/conf:ro
+    networks:
+      - default
+
+networks:
+  proxy-net:
+    external: true
+    name: zeus-dashboard_zeus-dashboard-network

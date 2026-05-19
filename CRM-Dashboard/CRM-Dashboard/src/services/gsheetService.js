@@ -4,7 +4,7 @@ const { JWT } = require('google-auth-library');
 const fs = require('fs');
 const path = require('path');
 
-const CREDENTIALS_PATH = path.join(__dirname, '../../../conf/credentials.json');
+const CREDENTIALS_PATH = path.join(__dirname, '../../conf/credentials.json');
 
 function parseNumber(value) {
     if (value === null || value === undefined || value === '') return 0;

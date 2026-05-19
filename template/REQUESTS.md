@@ -2,566 +2,216 @@
 
 ## Phạm vi hiện tại
 
-Chỉ sử dụng kiến trúc đã được chuyển đổi sang mô hình:
+Dự án hiện tập trung vào một hệ thống CRM Dashboard để theo dõi sức khỏe học tập, hiệu quả chăm sóc học viên, tình trạng gia hạn và dự báo doanh thu.
+
+Kiến trúc cần giữ theo hướng:
 
 ```text
-Google Sheet / Data_Model
+Google Sheet dữ liệu gốc
         ↓
-Sync job
+Đồng bộ dữ liệu riêng
         ↓
-SQLite Database
+Database nội bộ
         ↓
-Backend API + Socket.io
-        ↓
-Dashboard UI + Filters
+Dashboard + Phân quyền người dùng
 ```
 
-Không quay lại mô hình cũ là Dashboard gọi trực tiếp Google Sheets mỗi lần người dùng mở trang.
+Nguyên tắc quan trọng:
+
+- Không để dashboard đọc trực tiếp Google Sheet khi người dùng mở trang.
+- Dữ liệu phải đi qua bước đồng bộ trước để hệ thống ổn định, nhanh và dễ kiểm soát.
+
+---
+
+## Mục tiêu nghiệp vụ chính
+
+### 1. Dashboard CRM / CSI
+
+Hệ thống cần hỗ trợ:
+
+- Theo dõi tổng quan sức khỏe học tập của học viên.
+- Phân tích xu hướng cải thiện hoặc trượt dốc.
+- Theo dõi hiệu quả chăm sóc theo CSS.
+- Theo dõi tình trạng gia hạn.
+- Hỗ trợ forecast doanh thu.
+- Cho phép lọc dữ liệu theo nhiều chiều.
+- Xuất báo cáo PDF từ dashboard.
+
+### 2. Quản lý người dùng
+
+Hệ thống cần có quản lý người dùng theo 4 cấp độ:
+
+- Head
+- CSS Manager
+- CSS Team Leader
+- Staff
+
+Mục tiêu:
+
+- Có đăng nhập tập trung.
+- Có thể cấp phát tài khoản theo cơ cấu quản lý.
+- Tạo nền tảng để phân quyền dữ liệu và mở rộng sau này.
+
+### 3. Vận hành production
+
+Hệ thống cần vận hành ổn định trên domain:
+
+```text
+https://crm.icanwork.vn
+```
+
+Yêu cầu:
+
+- Truy cập được qua HTTPS.
+- Có cơ chế đồng bộ dữ liệu định kỳ.
+- Có môi trường production tách biệt với máy local.
 
 ---
 
 ## Trạng thái đã hoàn thành
 
-### 1. Data source
+### 1. Nguồn dữ liệu
 
-- Nguồn dữ liệu Google Sheet hiện tại: tab `Data_Model`.
-- Không đọc các sheet cũ theo index.
-- Không đọc các cột cũ như:
-  - `Cut off date`
-  - `Period_Month`
-  - `Điểm sức khỏe`
-  - `Phân loại sức khỏe`
-- Data model hiện tại đọc theo các cột thật của `Data_Model`, gồm:
-  - `Student_ID`
-  - `Tên Học viên`
-  - `Email`
-  - `SĐT`
-  - `CSS`
-  - `Score_Target`
-  - `Score_Base`
-  - `MoM/QoQ_Variance`
-  - `Phân loại Target`
-  - `Phân loại Base`
-  - `Nhóm`
-  - `Tỉ lệ gián đoạn do GV`
-  - `Tỉ lệ học dở`
-  - `Tốc độ kích hoạt`
-  - `Trạng thái gia hạn`
-  - `Doanh thu gia hạn`
-  - `Sản phẩm gia hạn chi tiết`
-  - `Số buổi còn lại`
-  - `Trạng thái vòng đời`
-  - `Điểm sức khỏe quản trị`
-  - `Nhịp độ học tập`
-  - `Gián đoạn do GV  (tích lũy)`
+- Đã chốt dùng một nguồn dữ liệu chính từ Google Sheet hiện tại.
+- Dữ liệu đã được chuẩn hóa để phục vụ dashboard CRM.
+- Không dùng lại mô hình cũ hoặc dữ liệu cũ ngoài phạm vi đã thống nhất.
+
+### 2. Cơ chế đồng bộ dữ liệu
+
+- Đã tách riêng bước đồng bộ dữ liệu khỏi dashboard.
+- Dashboard chỉ làm việc với dữ liệu đã được đồng bộ sẵn.
+- Việc này giúp hệ thống nhanh hơn và tránh phụ thuộc trực tiếp vào Google khi người dùng truy cập.
+
+### 3. Dashboard nghiệp vụ
+
+Dashboard hiện đã có các nhóm nội dung chính:
+
+- Tổng quan học viên
+- Chỉ số sức khỏe học tập
+- Nhóm chuyển dịch sức khỏe
+- Hiệu quả chăm sóc
+- Tình trạng gia hạn
+- Forecast doanh thu
+
+### 4. Bộ lọc và báo cáo
+
+Đã hỗ trợ các bộ lọc chính như:
+
+- thời gian
+- CSS phụ trách
+- nhóm sức khỏe
+- nhóm chuyển dịch
+- trạng thái gia hạn
+- vòng đời học viên
+
+Đã có tính năng:
+
+- xuất PDF từ dashboard hiện tại
+
+### 5. Đăng nhập và phân quyền
+
+Đã bổ sung:
+
+- màn hình đăng nhập
+- quản lý user theo 4 cấp độ
+- phân quyền cơ bản theo cấp quản lý
+- cấp phát user để phục vụ triển khai thực tế
+
+### 6. Triển khai production
+
+Đã deploy thành công hệ thống lên domain:
+
+```text
+https://crm.icanwork.vn
+```
+
+Trạng thái đã xác minh:
+
+- truy cập public thành công
+- đăng nhập hoạt động
+- dashboard hoạt động
+- đồng bộ dữ liệu hoạt động
 
 ---
 
-### 2. Google Sheet service
+## Quy tắc quản lý người dùng
 
-File chính:
+Cấu trúc role hiện tại:
 
-```text
-src/services/gsheetService.js
-```
+- **Head**: quản lý toàn bộ hệ thống
+- **CSS Manager**: quản lý các nhóm dưới quyền
+- **CSS Team Leader**: quản lý staff trong nhóm
+- **Staff**: sử dụng hệ thống theo phạm vi được cấp
 
-Đã cập nhật để:
+Nguyên tắc:
 
-- Xác thực Google Sheets bằng Service Account + `google-spreadsheet` + `google-auth-library`.
-- Chỉ đọc sheet theo title `Data_Model`.
-- Map dữ liệu thô sang object nghiệp vụ:
-
-```js
-{
-  student: {},
-  health: {},
-  movement: {},
-  operation: {},
-  renewal: {}
-}
-```
-
-- Có parser số và phần trăm:
-  - `parseNumber()`
-  - `parsePercent()`
-
-Yêu cầu duy trì:
-
-- Không gọi `getSheetData()` trực tiếp trong request dashboard.
-- Chỉ dùng `getSheetData()` trong sync job.
-
----
-
-### 3. Sync job
-
-File chính:
-
-```text
-src/scripts/sync.js
-```
-
-Đã chuyển Google Sheet thành job đồng bộ riêng:
-
-```text
-Google Sheet Data_Model → SQLite dashboard_data
-```
-
-Job thực hiện:
-
-- Đọc dữ liệu từ Google Sheet tab `Data_Model`.
-- Xóa dữ liệu cũ trong bảng `dashboard_data`.
-- Insert lại toàn bộ dữ liệu mới.
-- Ghi `synced_at` cho mỗi lần đồng bộ.
-- Có thể chạy thủ công bằng lệnh:
-
-```bash
-cd /mnt/f/code/strongdm-main/CRM-Dashboard/CRM-Dashboard
-node src/scripts/sync.js
-```
-
-Kết quả sync đã kiểm chứng:
-
-```text
-5054 rows
-```
-
-Lưu ý quan trọng:
-
-- Sync job chạy tách khỏi web process.
-- Không import sync job vào web server để tránh web bị treo nếu Google API chậm.
-- Endpoint `/api/sync` hiện chỉ trả thông báo hướng dẫn chạy sync riêng, không tự chạy Google sync trong web process.
-
----
-
-### 4. Database
-
-File chính:
-
-```text
-src/db/database.js
-```
-
-Đã dùng SQLite làm database cache nội bộ.
-
-Bảng chính:
-
-```sql
-dashboard_data
-```
-
-Các nhóm dữ liệu lưu trong DB:
-
-- Period / Time:
-  - `cut_off_date`
-  - `period_month`
-  - `period_quarter`
-  - `period_year`
-  - `period_week`
-- Student:
-  - `student_id`
-  - `student_name`
-  - `email`
-  - `phone`
-  - `css`
-- Health:
-  - `score_target`
-  - `score_base`
-  - `variance`
-  - `target_category`
-  - `base_category`
-  - `management_health_score`
-  - `learning_pace`
-- Movement:
-  - `movement_group`
-- Operation:
-  - `teacher_disruption_rate`
-  - `unfinished_rate`
-  - `activation_speed`
-  - `teacher_disruption_cumulative`
-- Renewal:
-  - `renewal_status`
-  - `renewal_revenue`
-  - `renewal_product`
-  - `remaining_sessions`
-  - `lifecycle_status`
-- Sync:
-  - `synced_at`
-
-Điều chỉnh quan trọng:
-
-- Không đặt SQLite DB runtime trên `/mnt/f` để tránh lỗi lock/hang IO trong WSL/NTFS.
-- DB runtime được đặt ở filesystem Linux local:
-
-```text
-/home/linhpg/.crm-dashboard/crm.db
-```
-
-Có thể override bằng biến môi trường:
-
-```bash
-CRM_DB_DIR=/path/to/db
-CRM_DB_PATH=/path/to/crm.db
-```
-
----
-
-### 5. Backend dashboard server
-
-File chính:
-
-```text
-src/app.js
-```
-
-Backend hiện chỉ đọc từ SQLite, không đọc Google Sheet trực tiếp.
-
-Luồng xử lý:
-
-```text
-SQLite dashboard_data
-        ↓
-mapDbRow()
-        ↓
-classifyHealthMovement()
-        ↓
-applyFilters()
-        ↓
-calculateComprehensiveMetrics()
-        ↓
-API / Socket.io payload
-```
-
-Endpoints hiện có:
-
-```http
-GET /health
-GET /api/dashboard
-POST /api/sync
-```
-
-Trong đó:
-
-- `GET /health`: kiểm tra server sống.
-- `GET /api/dashboard`: trả payload dashboard từ SQLite.
-- `POST /api/sync`: không chạy sync trực tiếp; trả hướng dẫn chạy `node src/scripts/sync.js`.
-
-Socket.io:
-
-- Emit sự kiện:
-
-```text
-dataUpdate
-```
-
-- Nhận filter từ frontend qua:
-
-```text
-setFilters
-```
-
-Backend có cache RAM để tăng tốc:
-
-```js
-DATA_CACHE_TTL_MS = 15000
-```
-
-Mục tiêu cache:
-
-- Không query SQLite và map 5054 dòng liên tục.
-- Tăng tốc F5 dashboard.
-- Tăng tốc apply filter.
-- Giảm lag khi socket update.
-
----
-
-### 6. Analytics engine
-
-File chính:
-
-```text
-src/services/analyticsService.js
-```
-
-Đã dựng lại logic theo `Data_Model`.
-
-Các hàm chính:
-
-- `normalizeMovementGroup(group)`
-- `classifyHealthMovement(data)`
-- `applyFilters(data, filters)`
-- `calculateComprehensiveMetrics(data)`
-- `getFilterOptions(data)`
-- `parseDateValue(value)`
-
-Dashboard metrics hiện hỗ trợ:
-
-#### Overview
-
-- Tổng học viên.
-- Điểm Target trung bình.
-- Điểm Base trung bình.
-- Tỷ lệ phục hồi / cải thiện.
-- Tỷ lệ trượt dốc.
-- Tỷ lệ giữ nguyên.
-- Renewal Rate.
-- Cash Revenue.
-- Forecast Revenue.
-
-#### Health Movement
-
-Mapping nhóm chuyển dịch theo `Nhóm`:
-
-- `1.` và `2.` → `Phục hồi / cải thiện`
-- `4.` và `5.` → `Trượt dốc`
-- `3a.` → `Giữ nguyên tốt`
-- `3b.` và `6.` → `Giữ nguyên xấu`
-- `7.`, `8.`, `9.` → `Mới / không đủ base`
-
-Đồng thời giữ lại thống kê nhóm chi tiết theo nguyên văn `Nhóm`.
-
-#### Care / Operation
-
-- CSS distribution.
-- Tỷ lệ học dở trung bình.
-- Tỷ lệ gián đoạn do GV trung bình.
-
-#### Renewal Correlation
-
-- Renewal status counts.
-- Renewal Rate theo từng phân loại sức khỏe Target.
-- Lifecycle status counts.
-
-#### Forecast
-
-- Forecast theo từng tệp sức khỏe Target.
-- RR giả định mặc định:
-  - Khỏe mạnh: 35%
-  - Cần chú ý: 22%
-  - Báo động: 10%
-- Forecast dùng average renewal revenue nếu có; fallback 5.000.000đ nếu chưa có doanh thu gia hạn.
-
----
-
-### 7. Frontend dashboard
-
-File chính:
-
-```text
-public/index.html
-```
-
-Đã dựng lại dashboard dùng dữ liệu từ API/Socket, không đọc Google Sheet.
-
-Thành phần hiện có:
-
-#### Filters động
-
-Filter options được backend sinh từ toàn bộ DB cache.
-
-Bộ lọc thời gian đã được bổ sung:
-
-- Quý.
-- Tháng.
-- Từ ngày.
-- Đến ngày.
-
-Lưu ý: filter `Năm` đã được bỏ khỏi UI/backend filter theo yêu cầu hiện tại.
-
-Các cột thời gian được hỗ trợ nếu có trong `Data_Model`:
-
-- `Cut off date` / `Ngày` / `Date`
-- `Period_Month` / `Tháng` / `Month`
-- `Period_Quarter` / `Quý` / `Quarter`
-- `Period_Year` / `Năm` / `Year`
-- `Period_Week` / `Tuần` / `Week`
-
-Nếu `Data_Model` hiện tại chưa có các cột thời gian này, dashboard vẫn chạy bình thường và filter thời gian không làm mất dữ liệu.
-
-Các filter nghiệp vụ hiện có:
-
-- Nhóm Health Movement gộp.
-- CSS / người chăm sóc.
-- Nhóm chuyển dịch chi tiết.
-- Phân loại Target.
-- Phân loại Base.
-- Trạng thái gia hạn.
-- Sản phẩm gia hạn.
-- Trạng thái vòng đời.
-
-Frontend gửi filter bằng Socket.io:
-
-```js
-socket.emit('setFilters', filters)
-```
-
-#### KPI cards
-
-- Tổng học viên.
-- Điểm Target TB.
-- Tỷ lệ phục hồi / cải thiện.
-- Tỷ lệ trượt dốc.
-- Renewal Rate.
-- Cash Revenue.
-- Forecast Revenue.
-- Số dòng sau lọc.
-
-#### Charts
-
-- Health Movement - 6 nhóm gộp.
-- Phân loại sức khỏe Target.
-- Nhóm chuyển dịch chi tiết.
-- Renewal Status.
-
-#### Tables
-
-- Forecast theo tệp sức khỏe.
-- Renewal Rate theo sức khỏe.
-
-#### Export PDF
-
-Đã bổ sung tính năng xuất dashboard hiện tại ra file PDF trực tiếp trên frontend.
-
-Cách dùng:
-
-- Người dùng chọn filter mong muốn.
-- Nhấn nút `Xuất PDF` trên thanh filter.
-- Hệ thống capture dashboard hiện tại, tự chia nhiều trang A4 và tải file `.pdf`.
-
-Thư viện frontend đang dùng qua CDN:
-
-- `html2canvas@1.4.1`
-- `jspdf@2.5.1`
-
-Đặc điểm triển khai:
-
-- Export theo đúng trạng thái dashboard đang xem, bao gồm KPI, charts, tables và filter context.
-- Không gọi Google Sheet trực tiếp khi export PDF.
-- Không tạo PDF trong backend.
-- Không ghi file PDF vào server.
-- File PDF được tạo và tải xuống ở trình duyệt người dùng.
-- Nếu thư viện CDN không tải được, fallback sang `window.print()` để người dùng có thể `Save as PDF` bằng trình duyệt.
-- Các nút thao tác có class `.no-export` sẽ bị ẩn khi export/print.
-
-File chính:
-
-```text
-public/index.html
-```
-
-Các hàm chính:
-
-```js
-exportDashboardPDF()
-buildPdfFileName()
-```
-
----
-
-### 8. Tối ưu hiệu năng và layout
-
-Đã xử lý vấn đề load chậm và biểu đồ quá dài.
-
-#### Backend
-
-- Thêm RAM cache trong `src/app.js`.
-- TTL mặc định: 15 giây.
-- Không query DB liên tục nếu dữ liệu cache còn hạn.
-
-#### Frontend
-
-- Tắt animation Chart.js:
-
-```js
-animation: false
-```
-
-- Giới hạn chiều cao chart cards:
-  - Chart thường: 380px.
-  - Compact chart: 340px.
-  - Wide chart: 420px.
-
-- Bọc canvas trong `.chart-box` để không kéo dài layout.
-- Biểu đồ nhóm chuyển dịch chi tiết đổi sang horizontal bar.
-- Rút gọn label dài trên trục, giữ label đầy đủ trong tooltip.
-- Giới hạn số item hiển thị trong chart:
-  - Movement: 8.
-  - Target health: 8.
-  - Detailed group: 10.
-  - Renewal: 8.
+- Role cao hơn có quyền quản lý role thấp hơn.
+- Không cho role thấp tạo hoặc quản lý role cao hơn quyền của mình.
+- Hệ thống cần sẵn sàng để mở rộng phân quyền dữ liệu chi tiết hơn trong giai đoạn sau.
 
 ---
 
 ## Cách vận hành hiện tại
 
-### 1. Sync dữ liệu từ Google Sheet vào Database
+### 1. Về dữ liệu
 
-Chạy khi cần cập nhật dữ liệu:
+- Dữ liệu gốc vẫn nằm ở Google Sheet.
+- Hệ thống sẽ đồng bộ dữ liệu từ nguồn này vào database nội bộ.
+- Dashboard hiển thị từ dữ liệu đã đồng bộ.
 
-```bash
-cd /mnt/f/code/strongdm-main/CRM-Dashboard/CRM-Dashboard
-node src/scripts/sync.js
-```
+### 2. Về người dùng
 
-### 2. Chạy dashboard web
+- Người dùng phải đăng nhập mới truy cập dashboard.
+- Quyền xem và quyền quản lý sẽ phụ thuộc vào role.
 
-Chạy foreground, giữ terminal mở:
+### 3. Về production
 
-```bash
-cd /mnt/f/code/strongdm-main/CRM-Dashboard/CRM-Dashboard
-./scripts/run.sh
-```
-
-Hoặc:
-
-```bash
-cd /mnt/f/code/strongdm-main/CRM-Dashboard/CRM-Dashboard
-HOST=0.0.0.0 PORT=3000 node src/app.js
-```
-
-Mở trình duyệt:
-
-```text
-http://127.0.0.1:3000
-```
-
-Nếu browser chạy ở Windows/host mà `127.0.0.1` không vào được, dùng WSL IP:
-
-```bash
-hostname -I
-```
-
-Sau đó mở:
-
-```text
-http://<WSL_IP>:3000
-```
+- Hệ thống đang chạy online trên domain chính thức.
+- Có thể tiếp tục cấu hình thêm user thật và phân quyền vận hành thực tế.
 
 ---
 
 ## Những việc không được làm trong phase hiện tại
 
-- Không để dashboard query Google Sheets trực tiếp khi user mở web.
-- Không import `google-spreadsheet` trong `src/app.js`.
-- Không import `src/scripts/sync.js` vào web process để chạy auto sync.
-- Không đọc sheet bằng index như `sheetsByIndex[0]`.
-- Không dùng lại schema cột cũ không thuộc `Data_Model`.
-- Không đặt SQLite DB runtime trên `/mnt/f` nếu chạy trong WSL.
+- Không để dashboard đọc Google Sheet trực tiếp khi mở trang.
+- Không bỏ cơ chế đăng nhập ở môi trường production.
+- Không làm sai cấu trúc phân quyền 4 cấp đã thống nhất.
+- Không để dữ liệu vận hành phụ thuộc vào thao tác thủ công trên local.
+- Không đưa các thông tin nhạy cảm ra tài liệu công khai.
 
 ---
 
 ## Việc nên làm tiếp theo
 
-1. Thêm script export CSV/Excel từ dữ liệu đã lọc.
-2. Thêm runbook vận hành sync định kỳ bằng cron hoặc Windows Task Scheduler.
-3. Thêm bảng drill-down danh sách học viên theo filter hiện tại.
-4. Tách frontend thành nhiều tab:
-   - Overview
-   - Health Movement
-   - Care Effectiveness
-   - Renewal Correlation
-   - Revenue Forecast
-5. Thêm kiểm thử regression cho:
-   - Sheet `Data_Model` đổi tên cột.
-   - DB rỗng.
-   - Sync thất bại.
-   - Filter không có kết quả.
+### 1. Hoàn thiện quản lý người dùng
+
+- thêm đổi mật khẩu
+- thêm reset mật khẩu
+- thêm tìm kiếm/lọc danh sách user
+- thêm lịch sử thao tác quản trị user
+
+### 2. Hoàn thiện phân quyền dữ liệu
+
+- Head xem toàn bộ
+- Manager xem dữ liệu của team mình
+- Team Leader xem dữ liệu của nhóm mình
+- Staff xem đúng phạm vi cá nhân được cấp
+
+### 3. Nâng cấp dashboard
+
+- xuất Excel/CSV
+- xem drill-down danh sách học viên
+- tách dashboard thành các nhóm màn hình rõ hơn
+
+### 4. Vận hành ổn định hơn
+
+- bổ sung hướng dẫn vận hành
+- bổ sung backup dữ liệu
+- bổ sung monitoring cơ bản
+- bổ sung kiểm thử cho các luồng chính
+
+### 5. Bảo mật production
+
+- thay tài khoản mặc định bằng tài khoản thật
+- chuẩn hóa quản lý mật khẩu và quyền truy cập
+- siết chặt cấu hình production khi cần

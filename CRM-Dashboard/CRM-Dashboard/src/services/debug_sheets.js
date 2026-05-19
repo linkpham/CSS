@@ -4,7 +4,7 @@ const fs = require('fs');
 const path = require('path');
 
 const CREDENTIALS_PATH = path.join(__dirname, '../../../conf/credentials.json');
-const SPREADSHEET_ID = '1t46BJhDlgB8BYRlx29x5GeB-Gd3A4Jolzm87OZhYdAQ';
+const SPREADSHEET_ID = '1CHXlpCmanz8BxvPg91898g_aFoMKKIWx-16n0SyM3wY';
 
 async function listSheetTitles() {
     try {
