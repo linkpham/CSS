@@ -1,0 +1,2 @@
+# Phase 228
+- Tại trang `Vận hành` (/daily-ops?program=all), block `📅 Tổng số ca Unscheduled` và cả block `📊 Ca Unscheduled theo tuần`, kiểm tra lại lớp 1:2 có nghĩa là `grpcls_total_seats = 2` chứ không phải `grpcls_total_seats >= 2`

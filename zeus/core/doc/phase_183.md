@@ -1,0 +1,2 @@
+# Phase 183
+- Bổ sung thêm vào trang Chăm sóc CSI chỉ số về tỉ lệ học viên ontrack = [số học viên ontrack]/[tổng số học viên active], Số học viên ontrack = Tổng học viên có số lượng ca thành công trong giai đoạn đo từ 90% trở lên (vd có 10 buổi thì học thảnh công 9 buổi). Cụ thể, active là có buổi học thành công trong thời gian được lọc, còn ontrack là có tỉ lệ buổi học thành công trên 90%.

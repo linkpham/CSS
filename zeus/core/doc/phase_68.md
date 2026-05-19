@@ -1,0 +1,3 @@
+# Phase 68 - Tiếp tục sửa lỗi của phase 66 và 67
+- `Teacher Country` trong file excel phải được trình bày giống hệt như cấu trúc của Sheet `Plan`. Hãy sửa lại và rà soát đảm bảo độ chính xác về cấu trúc trình bày (có thể điều chỉnh lại query cho phù hợp với cách tổ chức)
+- Block `📅 Tổng số ca Unscheduled theo Quốc gia GV` cần phải được trình bày giống hệt `🌍 Tổng số ca theo Quốc gia GV (Tuần)`. Hãy sửa lại và rà soát đảm bảo độ chính xác về cấu trúc trình bày (có thể điều chỉnh lại query cho phù hợp với cách tổ chức)

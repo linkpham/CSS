@@ -1,0 +1,2 @@
+# Phase 184
+- Sửa lại tỉ lệ học viên ontrack: Số ca thành công là số ca có code nghiệm thu là 9 hoặc 12. Số học viên ontrack = Tổng học viên có số lượng ca thành công (có code nghiệm thu là 9 hoặc 12) trong giai đoạn đo từ 90% trở lên (vd có 10 buổi thì học thảnh công 9 buổi). Cụ thể, active là có buổi học thành công trong thời gian được lọc, còn ontrack là có tỉ lệ buổi học thành công trên 90%.

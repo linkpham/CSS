@@ -1,0 +1,2 @@
+# Phase 151
+- Trong trang `Chăm sóc CSI`, tỉ lệ học thành công củng phải được được tính theo bộ lọc, các chỉ số `Tổng buổi hoàn thành ⓘ`, `Buổi thành công ⓘ`, `HV Noshow ⓘ`,`HV < 1/2 giờ ⓘ`,`GV Noshow ⓘ`,`Buổi TB / tuần` cũng phải được tính toán theo bộ lọc.

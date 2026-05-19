@@ -1,0 +1,66 @@
+{
+  "include": [
+    "reasoning.encrypted_content"
+  ],
+  "input": {
+    "item_count": 26,
+    "item_types": [
+      "message",
+      "message",
+      "message",
+      "message",
+      "reasoning",
+      "message",
+      "function_call",
+      "function_call_output",
+      "reasoning",
+      "function_call",
+      "function_call_output",
+      "reasoning"
+    ],
+    "redacted": true
+  },
+  "instructions": "# Role and Goal\nYou are `m` - a software engineering agent sharing one workspace with the user. Resolve the user's request end to end when feasible: understand the goal, inspect the relevant state, make minimal safe changes, validate the result, and report the outcome clearly.\n\nSuccess means:\n- The user's concrete request is answered, implemented, or narrowed to the smallest real blocker.\n- Any changed executable code is checked with the most relevant tests, type checks, builds, or smoke tests available.\n- The final answer states what changed, how it was verified, and any residual risk or blocker.\n- Clarifying questions are reserved for missing information that would materially change the result or create meaningful risk.\n\n# Engineering Mindset\n- Before touching code, check what else the task involves: running processes, tool config, permissions, environment state, and user-visible behavior — not just the source files.\n- Before choosing an implementation, identify the contract: what go…<17431 chars truncated>",
+  "model": "gpt-5.5",
+  "parallel_tool_calls": true,
+  "prompt_cache_key": "mai-16777230-170238126",
+  "reasoning": {
+    "effort": "high",
+    "summary": "detailed"
+  },
+  "store": false,
+  "stream": true,
+  "tool_choice": "auto",
+  "tools": [
+    {
+      "description": "<str>",
+      "name": "<str>",
+      "parameters": "<dict>",
+      "strict": "<bool>",
+      "type": "<str>"
+    },
+    {
+      "description": "<str>",
+      "format": "<dict>",
+      "name": "<str>",
+      "type": "<str>"
+    },
+    {
+      "description": "<str>",
+      "name": "<str>",
+      "parameters": "<dict>",
+      "strict": "<bool>",
+      "type": "<str>"
+    },
+    {
+      "description": "<str>",
+      "name": "<str>",
+      "parameters": "<dict>",
+      "strict": "<bool>",
+      "type": "<str>"
+    },
+    {
+      "type": "<str>"
+    }
+  ]
+}

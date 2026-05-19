@@ -1,0 +1,2 @@
+# Phase 174
+- Trong `👨‍🎓 Danh sách Học viên` loại bỏ cả các học viên có đơn `ordpay_pmethod_id = 0` (bảng `tbl_order_payments`) ra nữa, tức là danh sách không được bao gồm các học viên có đơn `ordpay_pmethod_id = 0`.

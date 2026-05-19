@@ -1,0 +1,71 @@
+version: '3.8'
+
+# Docker Compose for PRODUCTION WITHOUT MySQL
+# Uses SQLite for CareSoft cache tables instead of Docker MySQL
+# This is lighter and doesn't require MySQL to be pre-installed on server
+
+services:
+  # PHP-FPM Service
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: zeus-dashboard-app
+    restart: unless-stopped
+    working_dir: /var/www
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./src:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - zeus-dashboard-network
+
+  # Nginx Service (Production - Port 80)
+  webserver:
+    image: nginx:alpine
+    container_name: zeus-dashboard-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./src:/var/www
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - zeus-dashboard-network
+    depends_on:
+      - app
+
+  # Redis for caching
+  redis:
+    image: redis:alpine
+    container_name: zeus-dashboard-redis
+    restart: unless-stopped
+    networks:
+      - zeus-dashboard-network
+
+  # Queue Worker for background jobs
+  queue:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: zeus-dashboard-queue
+    restart: unless-stopped
+    working_dir: /var/www
+    user: root
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./src:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./docker/php/queue-entrypoint.sh:/usr/local/bin/queue-entrypoint.sh:ro
+    command: /bin/bash /usr/local/bin/queue-entrypoint.sh
+    networks:
+      - zeus-dashboard-network
+    depends_on:
+      - app
+      - redis
+
+networks:
+  zeus-dashboard-network:
+    driver: bridge

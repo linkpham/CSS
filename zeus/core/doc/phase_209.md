@@ -1,0 +1,6 @@
+# Phase 209
+- Số lần đổi GV không còn liên quan đến lịch cố định nữa, với SPW thì mỗi học viên thường sẽ có 1 giáo viên dạy lớp đó xuyên suốt từ đầu đến cuối. Do vậy `Số lần đổi GV` là số lần giáo viên nghỉ, hoặc do phụ huynh yêu cầu đổi 
+
+- Hãy kiểm tra bằng cách tự kết nối csdl qua `zeus-aurora-cluster-prod.cluster-csrn8dqqphhg.ap-southeast-1.rds.amazonaws.com` để kiểm tra các trường hợp hiển thị `Không tìm thấy buổi học SPW (đã hoàn thành) nào cho HV này trong khoảng thời gian đã chọn.`. Tôi cần mở `👁️ Xem`thì tất cả các buổi học của học viên phải được hiện ra, kèm trạng thái và sự thay đổi giáo viên.  
+
+Hãy kiểm tra với id học viên 5887, tên Phú Nguyễn, email Ngxuanthao174@gmail.com để  đảm bảo là có học với 4 giáo viên và chỉ có 3 lần đổi (khi nhấn mở `👁️ Xem` thì phải có danh sách các buổi học, kèm tình trạng buổi học của bạn Phú Nguyễn này) . Và kiểm tra  id học viên 4210, tên Nguyên Đinh, email lequyen90.neu@gmail.com thì số lần đổi giáo viên là 3, `do  Do GV nghỉ: 1`, `Do PH yêu cầu đổi: 2`. 

@@ -1,0 +1,92 @@
+version: '3.8'
+
+services:
+  # PHP-FPM Service
+  app:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: zeus-dashboard-app
+    restart: unless-stopped
+    working_dir: /var/www
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./src:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - zeus-dashboard-network
+
+  # Nginx Service (Production - Port 80)
+  webserver:
+    image: nginx:alpine
+    container_name: zeus-dashboard-nginx
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    volumes:
+      - ./src:/var/www
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+    networks:
+      - zeus-dashboard-network
+    depends_on:
+      - app
+
+  # Redis for caching
+  redis:
+    image: redis:alpine
+    container_name: zeus-dashboard-redis
+    restart: unless-stopped
+    networks:
+      - zeus-dashboard-network
+
+  # MySQL for Dashboard local data (CareSoft cache tables)
+  mysql:
+    image: mysql:8.0
+    container_name: zeus-dashboard-mysql
+    restart: unless-stopped
+    environment:
+      MYSQL_DATABASE: zeus_dashboard
+      MYSQL_USER: dashboard_user
+      MYSQL_PASSWORD: dashboard_password
+      MYSQL_ROOT_PASSWORD: root_password
+    volumes:
+      - zeus-dashboard-mysql:/var/lib/mysql
+    networks:
+      - zeus-dashboard-network
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-proot_password"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  # Queue Worker for background jobs (Phase 42)
+  # Phase 56: Use entrypoint script to wait for app setup and fix permissions
+  queue:
+    build:
+      context: .
+      dockerfile: docker/php/Dockerfile
+    container_name: zeus-dashboard-queue
+    restart: unless-stopped
+    working_dir: /var/www
+    user: root
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    volumes:
+      - ./src:/var/www
+      - ./docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+      - ./docker/php/queue-entrypoint.sh:/usr/local/bin/queue-entrypoint.sh:ro
+    # Phase 56: Use entrypoint script that waits for dependencies and fixes permissions
+    command: /bin/bash /usr/local/bin/queue-entrypoint.sh
+    networks:
+      - zeus-dashboard-network
+    depends_on:
+      - app
+      - redis
+
+networks:
+  zeus-dashboard-network:
+    driver: bridge
+
+volumes:
+  zeus-dashboard-mysql:

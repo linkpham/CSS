@@ -1,0 +1,3 @@
+# Phase 201
+- Rất tốt, tại bảng `👨‍🎓 Danh sách Học viên` của trang `Chăm sóc CSI`,  hãy thêm bộ lọc các học viên thỏa mãn điều kiện đã học xong 3 buổi học đầu tiên theo giai đoạn (ví dụ: tôi cần lọc ra những học viên đã học xong 3 buổi đầu tiên từ ngày 1/4 đến 13/4 chẳng hạn, bộ lọc sẽ lọc hết ra HV có 3 buổi đầu diễn ra trong khoảng thời gian từ 1/4 - 13/4)
+- Thêm phần cột tỉ lệ `%3BĐ` trong file excel xuất ra (cột cuối cùng, % thành công 3 buổi đầu)

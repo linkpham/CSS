@@ -1,0 +1,3 @@
+# Phase 175
+- Dựa trên 2 file sau: `/Users/que/Downloads/zeus/api_docs.md /Users/que/Downloads/zeus/lcms_report_queries.md` và tiếp tục dựa trên file '/Users/que/Downloads/zeus/sql report lcms.xlsx'`, hãy bổ sung thêm vào trang LCMS `/lcms` những chỉ số, thống kê, danh sách sao cho toàn diện nhất.
+- Tự thiết lập `LCMS_API_KEY` là `d8f9654b286797025bab397ec0c9de22` cho cả local và server khi deploy để không bị nhận thông báo `Có lỗi xảy ra: LCMS_API_KEY chưa được cấu hình` nữa. 

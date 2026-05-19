@@ -1,0 +1,3 @@
+# Phase 185
+- Sửa lại tỉ lệ học viên ontrack: Số ca thành công là số ca có code nghiệm thu chỉ là 12. Số học viên ontrack là Tổng học viên có số lượng ca thành công (có code nghiệm thu là 12) trong giai đoạn được lọc từ 90% trở lên (vd có 10 buổi đã lên lịch thì học thảnh công 9 buổi). Cụ thể, active là có buổi học thành công trong thời gian được lọc, còn ontrack là có tỉ lệ buổi học thành công trên 90%.  Tức là, Số học viên ontrack = [Tổng học viên có số lượng ca thành công] / [Tổng buổi đã lên lịch trong giai đoạn được lọc] phải lớn 90%. 
+- Tính lại chỉ số `Buổi học TB/tuần` là trung bình cộng avg_lessons_per_week của tất cả HV thỏa mãn bộ lọc.

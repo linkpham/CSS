@@ -1,0 +1,7 @@
+Content-Type: application/json
+Authorization: <redacted>
+Accept: text/event-stream
+Cache-Control: no-cache
+originator: Codex Desktop
+User-Agent: Codex Desktop/26.212.1823 (darwin; arm64)
+ChatGPT-Account-Id: <redacted>

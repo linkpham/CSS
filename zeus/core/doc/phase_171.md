@@ -1,0 +1,2 @@
+# Phase 171
+- Tính lại Chỉ số `Buổi TB / tuần ⓘ` ở bên cạnh chỉ số `GV Noshow ⓘ` theo như trước đây, trong đó giá trị `Buổi TB / tuần` là tổng số buổi thành công chia cho tổng số tuần trong giai đoạn lọc.

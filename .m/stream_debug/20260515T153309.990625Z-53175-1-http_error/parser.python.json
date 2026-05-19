@@ -1,0 +1,29 @@
+{
+  "payload": {
+    "_stream_debug": {
+      "event_count": 0,
+      "extra": {
+        "body": "{\"error\":{\"type\":\"usage_limit_reached\",\"message\":\"The usage limit has been reached\",\"plan_type\":\"team\",\"resets_at\":1779236235,\"eligible_promo\":null,\"resets_in_seconds\":377046}}",
+        "status": 429,
+        "terminal_event": "http_error"
+      },
+      "last_event_type": "",
+      "parse_error_count": 0,
+      "recent_events": [],
+      "recent_events_order": "newest_first",
+      "valid_event_count": 0
+    },
+    "error": {
+      "eligible_promo": null,
+      "message": "The usage limit has been reached",
+      "plan_type": "team",
+      "resets_at": 1779236235,
+      "resets_in_seconds": 377046,
+      "status": 429,
+      "status_code": 429,
+      "type": "usage_limit_reached"
+    }
+  },
+  "status": "failed",
+  "tool_calls": []
+}

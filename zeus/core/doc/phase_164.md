@@ -1,0 +1,2 @@
+# Phase 164
+- Mỗi khi lọc dữ liệu cần bổ sung circular progress indicator (made of segmented dots around a ring, with the percentage displayed in the center) của việc load dữ liệu để người dùng không cảm thấy chờ đợi lâu.

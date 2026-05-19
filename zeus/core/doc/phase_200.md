@@ -1,0 +1,2 @@
+# Phase 200
+- Bảng `📋 Bảng số liệu chi tiết` vẫn chưa được tính toán đúng tỷ lệ ontrack. Hiện nay tỉ lệ ontrack đang bị tính bằng tổng HV active (ví dụ: 56)/ Tổng số ca học diễn ra (ví dụ: 95). Nếu lấy số học viên chia cho ca học thì không đúng, mà phải cùng phân loại là Học viên/ Học viên. Công thức tính tỉ lệ ontrack phải là Số Học viên ontrack / tổng số hv active. Đúng ra là mẫu số ở đây sẽ là 56, còn tử số sẽ đếm số học viên học được 90% ca học thành công trong giai đoạn được lọc.

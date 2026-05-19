@@ -1,0 +1,118 @@
+# Roles liên quan đến tbl_admin trong Zeus System
+# Nguồn: zeus_auth-dev, zeus_core_api-dev, zeus_core.sql
+
+## Bảng cơ sở dữ liệu liên quan đến Admin Roles
+==============================================
+
+### 1. tbl_admin
+   - Bảng chính lưu thông tin admin users
+   - Primary key: admin_id
+   - Các cột: admin_username, admin_password, admin_email, admin_name, admin_timezone, admin_active, admin_password_update
+
+### 2. tbl_roles
+   - Bảng lưu danh sách vai trò
+   - Primary key: role_id
+   - Các cột: role_created, role_updated
+
+### 3. tbl_roles_lang
+   - Bảng lưu tên và mô tả vai trò theo ngôn ngữ
+   - Primary key: (rolelang_role_id, rolelang_lang_id)
+   - Các cột: role_name, role_description
+
+### 4. tbl_admin_roles
+   - Bảng trung gian liên kết admin với roles (many-to-many)
+   - Primary key: (admrole_admin_id, admrole_role_id)
+   - Foreign keys: admrole_admin_id -> tbl_admin.admin_id, admrole_role_id -> tbl_roles.role_id
+
+### 5. tbl_admin_permissions
+   - Bảng lưu quyền của từng admin
+   - Primary key: (admperm_admin_id, admperm_section_id)
+   - Các cột: admperm_value (1=Read-only, 2=Read&Write)
+
+### 6. tbl_role_permissions
+   - Bảng lưu quyền của từng role
+   - Primary key: (roleperm_role_id, admperm_section_id, admperm_value)
+
+
+## Danh sách Roles hiện có trong hệ thống
+=========================================
+
+| Role ID | Role Name         | Mô tả                    |
+|---------|-------------------|--------------------------|
+| 2       | Business Analyst  | Quản lý nghiệp vụ        |
+| 3       | Student Affairs   | Student Affairs          |
+
+
+## Danh sách Admin Accounts mặc định
+====================================
+
+| Admin ID | Username        | Role(s)             |
+|----------|-----------------|---------------------|
+| 1        | geadmin         | Super Admin (mặc định) |
+| 2        | gequantrivien   | Business Analyst    |
+| 3        | quanlygiaovien  | (giáo viên manager) |
+| 4        | -               | Student Affairs     |
+
+
+## Quan hệ Admin-Role (từ tbl_admin_roles)
+==========================================
+
+| admrole_admin_id | admrole_role_id |
+|------------------|-----------------|
+| 2                | 2               |
+| 4                | 3               |
+
+
+## Permission Sections cho Role Management
+==========================================
+
+Section ID 104 = SECTION_ROLES (Quản lý vai trò và phân quyền)
+- admperm_value 1: Chỉ xem (Read-only) - xem danh sách roles, chi tiết permission
+- admperm_value 2: Xem & chỉnh sửa (Read & Write) - thêm/sửa/xóa roles
+
+
+## Đặc điểm Role System
+=======================
+
+1. Một admin có thể giữ nhiều vai trò
+2. Một role có thể áp dụng cho nhiều admin
+3. Super Admin (admin_id = 1) có tất cả quyền, không cần gán role
+4. Quyền được tính theo giá trị cao nhất khi có nhiều role với cùng section
+5. Khi gỡ role, chỉ xóa permission nếu không còn role nào khác chứa permission đó
+
+
+## API Endpoints cho Role Management
+====================================
+
+- GET    /api/admin/roles                    - Danh sách roles
+- GET    /api/admin/roles/{role_id}          - Chi tiết role
+- POST   /api/admin/roles                    - Tạo role mới
+- PUT    /api/admin/roles/{role_id}          - Cập nhật role
+- DELETE /api/admin/roles/{role_id}          - Xóa role
+- GET    /api/admin/admin/{admin_id}/roles   - Roles của admin
+- POST   /api/admin/admin/{admin_id}/roles   - Gán roles cho admin
+- DELETE /api/admin/admin/{admin_id}/roles/{role_id} - Gỡ role khỏi admin
+- GET    /api/admin/admin/{admin_id}/permissions - Permissions của admin
+- GET    /api/admin/admin/my-permissions     - Permissions của admin đang đăng nhập
+
+
+## Source Files
+===============
+
+### zeus_auth-dev:
+- app/Models/Admin.php
+- app/Services/AdminService.php
+- app/Repositories/AdminRepository.php
+
+### zeus_core_api-dev:
+- app/Models/Admin.php (với HasRoles trait)
+- app/Models/Role.php
+- app/Models/RoleLang.php
+- app/Models/AdminRole.php
+- app/Models/AdminPermission.php
+- app/Models/RolePermission.php
+- app/Services/RoleService.php
+- app/Services/PermissionService.php
+- app/Traits/HasRoles.php
+- app/Http/Controllers/Admin/RoleController.php
+- specs/role_specs.md

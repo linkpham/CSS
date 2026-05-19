@@ -1,0 +1,15 @@
+{"ts": 1778859168.740713, "message": "runtime nudge queued (reasoning effort)", "extra": {"signal": "A shell command failed (exit 1)."}}
+{"ts": 1778859168.741054, "message": "reasoning effort nudge queued after shell error", "extra": {"call_id": "call_CfNnz0j2sBYjuIawwM5iVxEs", "exit_code": 1}}
+{"ts": 1778859189.580676, "message": "runtime nudge queued (read-only subagents)", "extra": {"readonly_shell_streak": 3, "readonly_shell_output_chars": 42860}}
+{"ts": 1778859190.8236318, "message": "environment_context refreshed (removed stale items)", "extra": {"removed": 1, "workdir": "/Users/que/Projects/CSS"}}
+{"ts": 1778859190.823715, "message": "micro-compact skipped (startup unfinished session tail)"}
+{"ts": 1778859191.9329689, "message": "environment_context refreshed (removed stale items)", "extra": {"removed": 1, "workdir": "/Users/que/Projects/CSS"}}
+{"ts": 1778859191.933056, "message": "micro-compact skipped (startup unfinished session tail)"}
+{"ts": 1778859258.851367, "message": "runtime nudge queued (read-only subagents)", "extra": {"readonly_shell_streak": 3, "readonly_shell_output_chars": 4859}}
+{"ts": 1778859287.072729, "message": "runtime nudge queued (reasoning effort)", "extra": {"signal": "Recent tool use has 6 consecutive successful shell calls marked readonly=true, with about 8208 chars of tool output."}}
+{"ts": 1778859287.0728729, "message": "reasoning effort nudge queued after readonly exploration streak", "extra": {"readonly_shell_streak": 6, "readonly_shell_output_chars": 8208}}
+{"ts": 1778859473.9095502, "message": "runtime nudge queued (reasoning effort)", "extra": {"signal": "A shell command failed (exit 1)."}}
+{"ts": 1778859473.910845, "message": "reasoning effort nudge queued after shell error", "extra": {"call_id": "call_pa7LJtSOk7v3J8PqhYRHvKCw", "exit_code": 1}}
+{"ts": 1778859488.573344, "message": "runtime nudge queued (reasoning effort)", "extra": {"signal": "A shell command failed (exit 1)."}}
+{"ts": 1778859488.573948, "message": "reasoning effort nudge queued after shell error", "extra": {"call_id": "call_OaHX3GxjYjBpYU78rEzrgKVt", "exit_code": 1}}
+{"ts": 1778859808.541597, "message": "runtime nudge queued (read-only subagents)", "extra": {"readonly_shell_streak": 3, "readonly_shell_output_chars": 1056}}

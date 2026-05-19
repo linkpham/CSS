@@ -1,0 +1,2 @@
+# Phase 162
+- Cần có nút `Lọc` bên cạnh nút `Xóa bộ lọc` để confirm việc lọc thay vì lọc ngay lập tức khi có sự thay đổi từ các input trong `👨‍🎓 Danh sách Học viên`. 2 inputs `📅 Buổi 1 từ ngày` và `📅 Buổi 1 đến ngày` cần phải nằm trên cùng 1 dòng.
