@@ -13,6 +13,11 @@ services:
       DATA_CACHE_TTL_MS: ${DATA_CACHE_TTL_MS:-15000}
       BOOTSTRAP_HEAD_EMAIL: ${BOOTSTRAP_HEAD_EMAIL:-head@crm.local}
       BOOTSTRAP_HEAD_PASSWORD: ${BOOTSTRAP_HEAD_PASSWORD:-Head@123456}
+      ZEUS_DB_HOST: ${ZEUS_DB_HOST:-zeus-aurora-replica-3-prod.csrn8dqqphhg.ap-southeast-1.rds.amazonaws.com}
+      ZEUS_DB_PORT: ${ZEUS_DB_PORT:-3306}
+      ZEUS_DB_DATABASE: ${ZEUS_DB_DATABASE:-zeus_core}
+      ZEUS_DB_USERNAME: ${ZEUS_DB_USERNAME:-zeus_core_user}
+      ZEUS_DB_PASSWORD: ${ZEUS_DB_PASSWORD:-}
     volumes:
       - ./data:/app/data
       - ./conf:/app/conf:ro

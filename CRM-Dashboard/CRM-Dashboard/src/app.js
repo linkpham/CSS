@@ -10,6 +10,10 @@ const {
     getFilterOptions,
 } = require('./services/analyticsService');
 const {
+    getZeusDbConnectionDefaults,
+    testZeusDbConnection,
+} = require('./services/dbConnectionService');
+const {
     ROLE,
     bootstrapHeadUser,
     login,
@@ -352,6 +356,20 @@ app.post('/api/sync', requireAuth, requireAnyRole([ROLE.HEAD, ROLE.CSS_MANAGER])
     res.status(202).json({
         message: 'Sync is intentionally separated from web process. Run: node src/scripts/sync.js',
     });
+});
+
+app.get('/api/utilities/db-connection-defaults', requireAuth, requireAnyRole([ROLE.HEAD, ROLE.CSS_MANAGER]), (_req, res) => {
+    res.json({ defaults: getZeusDbConnectionDefaults() });
+});
+
+app.post('/api/utilities/test-db-connection', requireAuth, requireAnyRole([ROLE.HEAD, ROLE.CSS_MANAGER]), async (req, res) => {
+    try {
+        const result = await testZeusDbConnection(req.body || {});
+        res.json(result);
+    } catch (error) {
+        console.error('[api] test-db-connection failed:', error.message);
+        res.status(error.status || 500).json({ error: error.message, code: error.code || null });
+    }
 });
 
 io.on('connection', (socket) => {

@@ -1178,6 +1178,45 @@
                         <div class="card menu-card">
                             <div class="menu-card-head">
                                 <div class="menu-subtitle">Tiện ích</div>
+                                <h3>Kiểm thử kết nối CSDL</h3>
+                                <div class="toolbar-caption">Kiểm tra nhanh kết nối tới Zeus Core theo các tham số triển khai được mô tả trong <code>zeus/core/DEPLOY-SERVER.sh</code>.</div>
+                            </div>
+                            <div id="dbConnectionAccessNotice" class="menu-summary hidden">Chỉ Head hoặc CSS Manager được phép kiểm thử kết nối CSDL.</div>
+                            <form id="dbConnectionTestForm" class="form-grid hidden">
+                                <div>
+                                    <label>DB Host (ZEUS_DB_HOST)</label>
+                                    <input id="dbTestHost" placeholder="Aurora hostname" required />
+                                </div>
+                                <div>
+                                    <label>DB Port (ZEUS_DB_PORT)</label>
+                                    <input id="dbTestPort" type="number" min="1" max="65535" placeholder="3306" required />
+                                </div>
+                                <div>
+                                    <label>Database (ZEUS_DB_DATABASE)</label>
+                                    <input id="dbTestDatabase" placeholder="zeus_core" required />
+                                </div>
+                                <div>
+                                    <label>Username (ZEUS_DB_USERNAME)</label>
+                                    <input id="dbTestUsername" placeholder="zeus_core_user" required />
+                                </div>
+                                <div class="full-span">
+                                    <label>Password (ZEUS_DB_PASSWORD)</label>
+                                    <input id="dbTestPassword" type="password" placeholder="Để trống nếu server đã cấu hình sẵn env password" />
+                                </div>
+                                <div class="full-span menu-summary" id="dbConnectionDefaultsMeta">
+                                    Đang nạp cấu hình mặc định từ server...
+                                </div>
+                                <div class="full-span inline-actions">
+                                    <button type="submit" id="dbConnectionSubmitBtn">Kiểm thử kết nối</button>
+                                    <button type="button" class="ghost" onclick="loadDbConnectionDefaults(true)">Nạp lại tham số mặc định</button>
+                                </div>
+                                <div id="dbConnectionTestMessage" class="status hidden full-span"></div>
+                            </form>
+                            <div id="dbConnectionTestResult" class="metric-list"></div>
+                        </div>
+                        <div class="card menu-card">
+                            <div class="menu-card-head">
+                                <div class="menu-subtitle">Tiện ích</div>
                                 <h3>Xuất dữ liệu</h3>
                                 <div class="toolbar-caption">Xuất nhanh dashboard hoặc danh sách học viên ra các định dạng phục vụ báo cáo.</div>
                             </div>
@@ -1382,6 +1421,7 @@
         let latestDashboardPayload = null;
         let latestUsers = [];
         let latestStudentsPage = { students: [], page: 1, pageSize: 25, total: 0, totalPages: 1 };
+        let dbConnectionDefaults = null;
 
         function apiFetch(url, options = {}) {
             return fetch(url, {
@@ -1472,6 +1512,10 @@
 
         function canManageUsers(role) {
             return ['HEAD', 'CSS_MANAGER', 'CSS_TEAM_LEADER'].includes(role);
+        }
+
+        function canTestDbConnection(role) {
+            return ['HEAD', 'CSS_MANAGER'].includes(role);
         }
 
         function roleLabel(role) {
@@ -2049,6 +2093,103 @@
             }
         }
 
+        function setDbConnectionMessage(text = '', isError = false) {
+            const el = document.getElementById('dbConnectionTestMessage');
+            if (!text) {
+                el.className = 'status hidden full-span';
+                el.textContent = '';
+                return;
+            }
+            el.className = `${isError ? 'status error' : 'status'} full-span`;
+            el.classList.remove('hidden');
+            el.textContent = text;
+        }
+
+        function renderDbConnectionResult(result = null) {
+            const el = document.getElementById('dbConnectionTestResult');
+            if (!result) {
+                el.innerHTML = '';
+                return;
+            }
+            el.innerHTML = `
+                <div class="metric-item">
+                    <strong>Kết nối thành công</strong>
+                    <div class="muted small" style="margin-top:6px;">Đã xác thực tới Zeus Core theo cấu hình tham chiếu từ ${result.source || 'DEPLOY-SERVER.sh'}.</div>
+                </div>
+                <div class="metric-item"><strong>Host</strong><div class="muted small" style="margin-top:6px;">${result.host}:${result.port}</div></div>
+                <div class="metric-item"><strong>Database</strong><div class="muted small" style="margin-top:6px;">${result.database || '-'}</div></div>
+                <div class="metric-item"><strong>User hiện tại</strong><div class="muted small" style="margin-top:6px;">${result.currentUser || result.username || '-'}</div></div>
+                <div class="metric-item"><strong>MySQL Server</strong><div class="muted small" style="margin-top:6px;">${result.serverVersion || '-'}</div></div>
+                <div class="metric-item"><strong>Độ trễ</strong><div class="muted small" style="margin-top:6px;">${result.durationMs} ms</div></div>
+                <div class="metric-item"><strong>Thời gian server</strong><div class="muted small" style="margin-top:6px;">${result.serverTime || '-'}</div></div>
+            `;
+        }
+
+        function applyDbConnectionDefaults(defaults = {}) {
+            dbConnectionDefaults = defaults;
+            document.getElementById('dbTestHost').value = defaults.host || '';
+            document.getElementById('dbTestPort').value = defaults.port || 3306;
+            document.getElementById('dbTestDatabase').value = defaults.database || '';
+            document.getElementById('dbTestUsername').value = defaults.username || '';
+            document.getElementById('dbTestPassword').value = '';
+            document.getElementById('dbConnectionDefaultsMeta').innerHTML = `Nguồn tham số: <strong>${defaults.source || 'zeus/core/DEPLOY-SERVER.sh'}</strong><br/>Mật khẩu env trên server: <strong>${defaults.passwordConfigured ? 'đã cấu hình' : 'chưa cấu hình'}</strong>. Giá trị password không bao giờ được trả về UI.`;
+        }
+
+        function syncDbConnectionAccess() {
+            const allowed = canTestDbConnection(currentUser?.role);
+            document.getElementById('dbConnectionAccessNotice').classList.toggle('hidden', allowed);
+            document.getElementById('dbConnectionTestForm').classList.toggle('hidden', !allowed);
+            if (!allowed) {
+                setDbConnectionMessage('');
+                renderDbConnectionResult(null);
+            }
+        }
+
+        async function loadDbConnectionDefaults(showToast = false) {
+            if (!canTestDbConnection(currentUser?.role)) return;
+            try {
+                setDbConnectionMessage(showToast ? 'Đang nạp tham số mặc định...' : '', false);
+                const data = await apiFetch('/api/utilities/db-connection-defaults');
+                applyDbConnectionDefaults(data.defaults || {});
+                if (showToast) setDbConnectionMessage('Đã nạp lại tham số mặc định từ server.', false);
+            } catch (error) {
+                setDbConnectionMessage(`Không tải được tham số mặc định: ${error.message}`, true);
+            }
+        }
+
+        async function submitDbConnectionTest(event) {
+            event.preventDefault();
+            if (!canTestDbConnection(currentUser?.role)) return;
+            const button = document.getElementById('dbConnectionSubmitBtn');
+            const payload = {
+                host: document.getElementById('dbTestHost').value.trim(),
+                port: document.getElementById('dbTestPort').value.trim(),
+                database: document.getElementById('dbTestDatabase').value.trim(),
+                username: document.getElementById('dbTestUsername').value.trim(),
+                password: document.getElementById('dbTestPassword').value,
+            };
+
+            button.disabled = true;
+            renderDbConnectionResult(null);
+            setDbConnectionMessage('Đang kiểm thử kết nối CSDL...', false);
+            try {
+                const result = await apiFetch('/api/utilities/test-db-connection', {
+                    method: 'POST',
+                    body: JSON.stringify(payload),
+                    headers: { 'Content-Type': 'application/json' },
+                });
+                renderDbConnectionResult(result);
+                setDbConnectionMessage(`Kết nối thành công sau ${result.durationMs} ms.`, false);
+                setStatus(`Kiểm thử CSDL thành công • ${result.host}:${result.port} • ${result.database}`);
+            } catch (error) {
+                renderDbConnectionResult(null);
+                setDbConnectionMessage(error.message, true);
+                setStatus(`Kiểm thử CSDL thất bại: ${error.message}`, true);
+            } finally {
+                button.disabled = false;
+            }
+        }
+
         function renderCurrentUser() {
             document.getElementById('currentRole').textContent = roleLabel(currentUser.role);
             document.getElementById('currentUserMeta').innerHTML = `<strong>${currentUser.fullName}</strong><br/>${currentUser.email}`;
@@ -2059,6 +2200,7 @@
             document.getElementById('accountReportsTo').textContent = currentUser.reportsToName || (currentUser.reportsToUserId ? `User #${currentUser.reportsToUserId}` : '-');
             document.getElementById('accountMustChange').textContent = currentUser.mustChangePassword ? 'Có' : 'Không';
             document.getElementById('passwordBanner').classList.toggle('hidden', !currentUser.mustChangePassword);
+            syncDbConnectionAccess();
             renderTabs();
         }
 
@@ -2283,6 +2425,9 @@
             showApp(true);
             connectSocket();
             updateFilterSummary();
+            if (canTestDbConnection(currentUser.role)) {
+                await loadDbConnectionDefaults();
+            }
             await refreshDashboard();
             await loadStudents(1);
             await loadPriorityStudents();
@@ -2299,9 +2444,13 @@
             socket = null;
             authToken = '';
             currentUser = null;
+            dbConnectionDefaults = null;
             localStorage.removeItem('crmAuthToken');
             showApp(false);
             setLoginError('');
+            setDbConnectionMessage('');
+            renderDbConnectionResult(null);
+            document.getElementById('dbConnectionTestForm').reset();
             document.getElementById('loginPassword').value = '';
         }
 
@@ -2325,6 +2474,7 @@
         });
 
         document.getElementById('resetPasswordForm').addEventListener('submit', submitResetPasswordForm);
+        document.getElementById('dbConnectionTestForm').addEventListener('submit', submitDbConnectionTest);
 
         document.getElementById('changePasswordForm').addEventListener('submit', async (event) => {
             event.preventDefault();

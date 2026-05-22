@@ -11,8 +11,9 @@ Dashboard phải đạt chất lượng enterprise-grade: responsive cho desktop
 ```
 CRM-Dashboard/
 ├── CRM-Dashboard/
-├── zeus/
-│   ├── zeus_core.sql    (schema và dữ liệu mẫu của CSDL Zeus)
+├── REQUESTS.md
+├── zeus/               (thư mục tham khảo, không được phép chỉnh sửa)
+│   ├── zeus_core.sql   (schema và dữ liệu mẫu của CSDL Zeus)
 │   ├── core/    (chứa mã nguồn tham khảo để hiểu được các nghiệp vụ và các kết nối CSDL thông qua schema zeus_core.sql)
 ├── docs/
 │   ├── regression/    (thư mục chứa các tệp yêu cầu sửa lỗi)
