@@ -52,6 +52,52 @@ db.serialize(() => {
         synced_at TEXT
     )`);
 
+    db.run(`CREATE TABLE IF NOT EXISTS learner_journey_students (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        student_id TEXT NOT NULL UNIQUE,
+        student_name TEXT,
+        email TEXT,
+        phone TEXT,
+        css TEXT,
+        class_sizes TEXT,
+        package_names TEXT,
+        package_groups TEXT,
+        teacher_types TEXT,
+        purchased_sessions INTEGER DEFAULT 0,
+        unscheduled_sessions INTEGER DEFAULT 0,
+        scheduled_sessions INTEGER DEFAULT 0,
+        completed_sessions INTEGER DEFAULT 0,
+        cancelled_sessions INTEGER DEFAULT 0,
+        remaining_sessions INTEGER DEFAULT 0,
+        journey_status TEXT,
+        first_lesson_starttime TEXT,
+        last_lesson_starttime TEXT,
+        latest_order_amount REAL DEFAULT 0,
+        latest_order_date TEXT,
+        synced_at TEXT
+    )`);
+
+    db.run(`CREATE TABLE IF NOT EXISTS learner_journey_purchase_history (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        student_id TEXT NOT NULL,
+        order_id TEXT NOT NULL,
+        order_amount REAL DEFAULT 0,
+        order_date TEXT,
+        renewal_date TEXT,
+        class_sizes TEXT,
+        package_names TEXT,
+        package_groups TEXT,
+        teacher_types TEXT,
+        purchased_sessions INTEGER DEFAULT 0,
+        unscheduled_sessions INTEGER DEFAULT 0,
+        scheduled_sessions INTEGER DEFAULT 0,
+        completed_sessions INTEGER DEFAULT 0,
+        cancelled_sessions INTEGER DEFAULT 0,
+        remaining_sessions INTEGER DEFAULT 0,
+        synced_at TEXT,
+        UNIQUE(student_id, order_id)
+    )`);
+
     db.run(`CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         full_name TEXT NOT NULL,
@@ -96,6 +142,12 @@ db.serialize(() => {
     addColumnIfMissing('dashboard_data', 'period_year', 'TEXT');
     addColumnIfMissing('dashboard_data', 'period_week', 'TEXT');
 
+    addColumnIfMissing('learner_journey_students', 'package_groups', 'TEXT');
+    addColumnIfMissing('learner_journey_students', 'teacher_types', 'TEXT');
+    addColumnIfMissing('learner_journey_students', 'latest_order_amount', 'REAL DEFAULT 0');
+    addColumnIfMissing('learner_journey_students', 'latest_order_date', 'TEXT');
+    addColumnIfMissing('learner_journey_purchase_history', 'teacher_types', 'TEXT');
+
     // Migration cho module user management.
     addColumnIfMissing('users', 'css_scope', "TEXT DEFAULT ''");
     addColumnIfMissing('users', 'reports_to_user_id', 'INTEGER');
@@ -114,6 +166,13 @@ db.serialize(() => {
     db.run(`CREATE INDEX IF NOT EXISTS idx_dashboard_period_quarter ON dashboard_data(period_quarter)`);
     db.run(`CREATE INDEX IF NOT EXISTS idx_dashboard_period_year ON dashboard_data(period_year)`);
     db.run(`CREATE INDEX IF NOT EXISTS idx_dashboard_cutoff_date ON dashboard_data(cut_off_date)`);
+    db.run(`CREATE INDEX IF NOT EXISTS idx_learner_journey_student_id ON learner_journey_students(student_id)`);
+    db.run(`CREATE INDEX IF NOT EXISTS idx_learner_journey_css ON learner_journey_students(css)`);
+    db.run(`CREATE INDEX IF NOT EXISTS idx_learner_journey_status ON learner_journey_students(journey_status)`);
+    db.run(`CREATE INDEX IF NOT EXISTS idx_learner_journey_package_groups ON learner_journey_students(package_groups)`);
+    db.run(`CREATE INDEX IF NOT EXISTS idx_learner_journey_latest_order_date ON learner_journey_students(latest_order_date)`);
+    db.run(`CREATE INDEX IF NOT EXISTS idx_learner_journey_purchase_history_student_id ON learner_journey_purchase_history(student_id)`);
+    db.run(`CREATE INDEX IF NOT EXISTS idx_learner_journey_purchase_history_order_date ON learner_journey_purchase_history(order_date)`);
     db.run(`CREATE INDEX IF NOT EXISTS idx_users_email ON users(email)`);
     db.run(`CREATE INDEX IF NOT EXISTS idx_users_role ON users(role)`);
     db.run(`CREATE INDEX IF NOT EXISTS idx_users_reports_to ON users(reports_to_user_id)`);

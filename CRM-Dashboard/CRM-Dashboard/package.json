@@ -1,4 +1,8 @@
 {
+  "scripts": {
+    "sync:learner-journey": "node src/scripts/syncLearnerJourney.js",
+    "sync:learner-journey:mysql:tunnel": "bash scripts/sync-learner-journey-from-zeus-tunnel.sh"
+  },
   "dependencies": {
     "express": "^5.2.1",
     "google-auth-library": "^10.6.2",

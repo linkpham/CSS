@@ -31,17 +31,52 @@ function parseDateValue(value) {
     return Number.isNaN(parsed.getTime()) ? null : parsed;
 }
 
+function toMonthToken(value) {
+    const parsed = parseDateValue(value);
+    if (!parsed) return '';
+    const year = parsed.getUTCFullYear();
+    const month = String(parsed.getUTCMonth() + 1).padStart(2, '0');
+    return `${year}-${month}`;
+}
+
+function normalizeDateRange(fromDate, toDate) {
+    if (fromDate && toDate && fromDate > toDate) {
+        return { fromDate: toDate, toDate: fromDate };
+    }
+    return { fromDate, toDate };
+}
+
+function deriveStudentStatus(item = {}) {
+    const value = String(item?.renewal?.studentStatus || item?.studentStatus || item?.renewal?.lifecycleStatus || '').trim().toLowerCase();
+    if (!value) return '';
+    if (value.includes('expired') || value.includes('đã học hết buổi') || value.includes('hết gói') || value.includes('het goi')) return 'Expired';
+    if (value.includes('onboarding') || value.includes('pending start') || value.includes('active') || value.includes('còn lịch') || value.includes('đang học')) return 'Active';
+    return '';
+}
+
 function applyFilters(data, filters = {}) {
-    const fromDate = parseDateValue(filters.fromDate);
-    const toDate = parseDateValue(filters.toDate);
+    const normalizedRange = normalizeDateRange(parseDateValue(filters.fromDate), parseDateValue(filters.toDate));
+    const fromDate = normalizedRange.fromDate;
+    const toDate = normalizedRange.toDate;
+    const fromMonth = toMonthToken(fromDate);
+    const toMonth = toMonthToken(toDate);
     return data.filter(item => {
         if (filters.quarter && String(item.period?.quarter || '') !== String(filters.quarter)) return false;
         if (filters.month && String(item.period?.month || '') !== String(filters.month)) return false;
-        if ((fromDate || toDate) && item.period?.date) {
-            const itemDate = parseDateValue(item.period.date);
-            if (itemDate) {
+        if (fromDate || toDate) {
+            const itemMonth = String(item.period?.month || '').trim();
+            if (itemMonth) {
+                if (fromMonth && itemMonth < fromMonth) return false;
+                if (toMonth && itemMonth > toMonth) return false;
+            } else {
+                const itemDate = parseDateValue(item.period?.date);
+                if (!itemDate) return false;
                 if (fromDate && itemDate < fromDate) return false;
-                if (toDate && itemDate > toDate) return false;
+                if (toDate) {
+                    const inclusiveToDate = new Date(toDate.getTime());
+                    inclusiveToDate.setUTCHours(23, 59, 59, 999);
+                    if (itemDate > inclusiveToDate) return false;
+                }
             }
         }
         if (filters.css && item.student.css !== filters.css) return false;
@@ -51,9 +86,12 @@ function applyFilters(data, filters = {}) {
         if (filters.group && item.movement.group !== filters.group) return false;
         if (filters.renewalStatus && item.renewal.status !== filters.renewalStatus) return false;
         if (filters.product && item.renewal.product !== filters.product) return false;
+        if (filters.productType && item.renewal.productType !== filters.productType) return false;
+        if (filters.teacherType && item.renewal.teacherType !== filters.teacherType) return false;
         if (filters.lifecycleStatus && item.renewal.lifecycleStatus !== filters.lifecycleStatus) return false;
-        if (filters.minScoreTarget !== undefined && filters.minScoreTarget !== '' && item.health.scoreTarget < Number(filters.minScoreTarget)) return false;
-        if (filters.maxScoreTarget !== undefined && filters.maxScoreTarget !== '' && item.health.scoreTarget > Number(filters.maxScoreTarget)) return false;
+        if (filters.studentStatus && deriveStudentStatus(item) !== filters.studentStatus) return false;
+        if (filters.minScoreTarget !== undefined && filters.minScoreTarget !== '' && Number(item.health.scoreTarget) < Number(filters.minScoreTarget)) return false;
+        if (filters.maxScoreTarget !== undefined && filters.maxScoreTarget !== '' && Number(item.health.scoreTarget) > Number(filters.maxScoreTarget)) return false;
         return true;
     });
 }
@@ -71,8 +109,12 @@ function sum(data, selector) {
 }
 
 function avg(data, selector) {
-    if (!data.length) return 0;
-    return sum(data, selector) / data.length;
+    const values = data
+        .map(selector)
+        .map(value => Number(value))
+        .filter(value => Number.isFinite(value));
+    if (!values.length) return 0;
+    return values.reduce((total, value) => total + value, 0) / values.length;
 }
 
 function pct(numerator, denominator) {
@@ -84,15 +126,35 @@ function money(value) {
     return `${Math.round(Number(value) || 0).toLocaleString('vi-VN')}đ`;
 }
 
+function isRenewedRow(item) {
+    return String(item?.renewal?.status || '').includes('Đã gia hạn');
+}
+
+function isNewSaleRow(item) {
+    return String(item?.renewal?.status || '').includes('Bán mới');
+}
+
+function hasRealizedCash(item) {
+    return isRenewedRow(item) || isNewSaleRow(item);
+}
+
 function getRenewedRows(data) {
-    return data.filter(item => item.renewal.status && !item.renewal.status.includes('Chưa gia hạn'));
+    return data.filter(isRenewedRow);
+}
+
+function getRealizedCashRows(data) {
+    return data.filter(hasRealizedCash);
 }
 
 function calculateComprehensiveMetrics(data) {
     const total = data.length;
     const renewedRows = getRenewedRows(data);
-    const renewalRevenue = sum(data, item => item.renewal.revenue);
-    const avgRenewalRevenue = renewedRows.length ? renewalRevenue / renewedRows.length : 0;
+    const realizedCashRows = getRealizedCashRows(data);
+    const renewalRevenue = sum(renewedRows, item => item.renewal.revenue);
+    const realizedCashRevenue = sum(realizedCashRows, item => item.renewal.revenue);
+    const avgRenewalRevenue = renewedRows.length
+        ? renewalRevenue / renewedRows.length
+        : (realizedCashRows.length ? realizedCashRevenue / realizedCashRows.length : 0);
 
     const movementCounts = countBy(data, item => item.movement.normalized);
     const detailedGroupCounts = countBy(data, item => item.movement.group);
@@ -108,16 +170,28 @@ function calculateComprehensiveMetrics(data) {
     const stableBad = movementCounts['Giữ nguyên xấu'] || 0;
     const missingBase = movementCounts['Mới / không đủ base'] || 0;
 
+    const realizedByHealth = Object.fromEntries(Object.keys(targetHealthCounts).map(category => {
+        const rows = data.filter(item => item.health.targetCategory === category);
+        const renewed = rows.filter(isRenewedRow).length;
+        return [category, { total: rows.length, renewed }];
+    }));
+
     const forecastByHealth = Object.entries(targetHealthCounts).map(([category, count]) => {
+        const realized = realizedByHealth[category] || { total: count, renewed: 0 };
         let defaultRr = 0.15;
         if (category.includes('Khỏe mạnh')) defaultRr = 0.35;
         else if (category.includes('Cần chú ý')) defaultRr = 0.22;
         else if (category.includes('Báo động')) defaultRr = 0.10;
+        const realizedRate = realized.total ? (realized.renewed / realized.total) : 0;
+        const appliedRate = Math.max(defaultRr, realizedRate);
+        const eligibleCount = Math.max(count - realized.renewed, 0);
         return {
             category,
             students: count,
-            defaultRenewalRate: defaultRr,
-            forecastRevenue: count * defaultRr * (avgRenewalRevenue || 5000000),
+            realizedRenewed: realized.renewed,
+            eligibleStudents: eligibleCount,
+            defaultRenewalRate: appliedRate,
+            forecastRevenue: eligibleCount * appliedRate * (avgRenewalRevenue || 5000000),
         };
     });
 
@@ -132,7 +206,7 @@ function calculateComprehensiveMetrics(data) {
             slippageRate: pct(slippage, total),
             stableRate: pct(stableGood + stableBad, total),
             renewalRate: pct(renewedRows.length, total),
-            cashRevenue: money(renewalRevenue),
+            cashRevenue: money(realizedCashRevenue),
             forecastRevenue: money(forecastRevenue),
         },
         healthMovement: {
@@ -167,6 +241,10 @@ function calculateComprehensiveMetrics(data) {
                 defaultRenewalRate: `${(item.defaultRenewalRate * 100).toFixed(0)}%`,
                 forecastRevenue: money(item.forecastRevenue),
             })),
+            cashRevenueRealized: money(realizedCashRevenue),
+            realizedCashCount: realizedCashRows.length,
+            renewedCount: renewedRows.length,
+            newSaleCount: realizedCashRows.filter(isNewSaleRow).length,
         },
     };
 }
@@ -183,7 +261,10 @@ function getFilterOptions(data) {
         group: unique(item => item.movement.group),
         renewalStatus: unique(item => item.renewal.status),
         product: unique(item => item.renewal.product),
+        productType: unique(item => item.renewal.productType),
+        teacherType: unique(item => item.renewal.teacherType),
         lifecycleStatus: unique(item => item.renewal.lifecycleStatus),
+        studentStatus: unique(item => deriveStudentStatus(item)),
     };
 }
 

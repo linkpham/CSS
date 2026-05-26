@@ -1,217 +1,221 @@
 # REQUESTS.md
 
-## Phạm vi hiện tại
+## 1. Mục tiêu hiện tại
 
-Dự án hiện tập trung vào một hệ thống CRM Dashboard để theo dõi sức khỏe học tập, hiệu quả chăm sóc học viên, tình trạng gia hạn và dự báo doanh thu.
+Hệ thống đang được phát triển theo hướng **1 domain / 2 module**:
 
-Kiến trúc cần giữ theo hướng:
+- `https://crm.icanwork.vn` = CRM chính
+- `https://crm.icanwork.vn/ticket/` = Phân hệ Ticket
+
+Mục tiêu chung:
+
+- theo dõi sức khỏe học tập, hành trình học, lớp live, LCMS, gói học, gia hạn và doanh thu
+- hỗ trợ vận hành CSS / manager theo phạm vi phân quyền thật
+- dùng Zeus làm nguồn dữ liệu ngày càng nhiều hơn, thay cho logic proxy/legacy khi có thể
+- giữ dashboard theo hướng **decision-support**, không chỉ là bảng số liệu
+
+---
+
+## 2. Kiến trúc chốt
+
+### 2.1 CRM root
 
 ```text
-Google Sheet dữ liệu gốc
+Google Sheet / dữ liệu lịch sử
+        ↓ sync riêng
+SQLite nội bộ
         ↓
-Đồng bộ dữ liệu riêng
-        ↓
-Database nội bộ
-        ↓
-Dashboard + Phân quyền người dùng
+Dashboard CRM
 ```
 
-Nguyên tắc quan trọng:
-
-- Không để dashboard đọc trực tiếp Google Sheet khi người dùng mở trang.
-- Dữ liệu phải đi qua bước đồng bộ trước để hệ thống ổn định, nhanh và dễ kiểm soát.
-
----
-
-## Mục tiêu nghiệp vụ chính
-
-### 1. Dashboard CRM / CSI
-
-Hệ thống cần hỗ trợ:
-
-- Theo dõi tổng quan sức khỏe học tập của học viên.
-- Phân tích xu hướng cải thiện hoặc trượt dốc.
-- Theo dõi hiệu quả chăm sóc theo CSS.
-- Theo dõi tình trạng gia hạn.
-- Hỗ trợ forecast doanh thu.
-- Cho phép lọc dữ liệu theo nhiều chiều.
-- Xuất báo cáo PDF từ dashboard.
-
-### 2. Quản lý người dùng
-
-Hệ thống cần có quản lý người dùng theo 4 cấp độ:
-
-- Head
-- CSS Manager
-- CSS Team Leader
-- Staff
-
-Mục tiêu:
-
-- Có đăng nhập tập trung.
-- Có thể cấp phát tài khoản theo cơ cấu quản lý.
-- Tạo nền tảng để phân quyền dữ liệu và mở rộng sau này.
-
-### 3. Vận hành production
-
-Hệ thống cần vận hành ổn định trên domain:
+### 2.2 Dữ liệu Zeus
 
 ```text
-https://crm.icanwork.vn
+Zeus DB / CSI / learner journey / LCMS / order history
+        ↓ service riêng + cache
+API nội bộ CRM
+        ↓
+Dashboard CRM / Hồ sơ học viên / Zeus Analytics
 ```
 
-Yêu cầu:
-
-- Truy cập được qua HTTPS.
-- Có cơ chế đồng bộ dữ liệu định kỳ.
-- Có môi trường production tách biệt với máy local.
-
----
-
-## Trạng thái đã hoàn thành
-
-### 1. Nguồn dữ liệu
-
-- Đã chốt dùng một nguồn dữ liệu chính từ Google Sheet hiện tại.
-- Dữ liệu đã được chuẩn hóa để phục vụ dashboard CRM.
-- Không dùng lại mô hình cũ hoặc dữ liệu cũ ngoài phạm vi đã thống nhất.
-
-### 2. Cơ chế đồng bộ dữ liệu
-
-- Đã tách riêng bước đồng bộ dữ liệu khỏi dashboard.
-- Dashboard chỉ làm việc với dữ liệu đã được đồng bộ sẵn.
-- Việc này giúp hệ thống nhanh hơn và tránh phụ thuộc trực tiếp vào Google khi người dùng truy cập.
-
-### 3. Dashboard nghiệp vụ
-
-Dashboard hiện đã có các nhóm nội dung chính:
-
-- Tổng quan học viên
-- Chỉ số sức khỏe học tập
-- Nhóm chuyển dịch sức khỏe
-- Hiệu quả chăm sóc
-- Tình trạng gia hạn
-- Forecast doanh thu
-
-### 4. Bộ lọc và báo cáo
-
-Đã hỗ trợ các bộ lọc chính như:
-
-- thời gian
-- CSS phụ trách
-- nhóm sức khỏe
-- nhóm chuyển dịch
-- trạng thái gia hạn
-- vòng đời học viên
-
-Đã có tính năng:
-
-- xuất PDF từ dashboard hiện tại
-
-### 5. Đăng nhập và phân quyền
-
-Đã bổ sung:
-
-- màn hình đăng nhập
-- quản lý user theo 4 cấp độ
-- phân quyền cơ bản theo cấp quản lý
-- cấp phát user để phục vụ triển khai thực tế
-
-### 6. Triển khai production
-
-Đã deploy thành công hệ thống lên domain:
+### 2.3 Ticket module
 
 ```text
-https://crm.icanwork.vn
+Nhiều workbook ticket 2025 / 2026
+        ↓ sync riêng
+SQLite ticket riêng
+        ↓
+Ticket dashboard dưới /ticket/
 ```
 
-Trạng thái đã xác minh:
+Nguyên tắc không đổi:
 
-- truy cập public thành công
-- đăng nhập hoạt động
-- dashboard hoạt động
-- đồng bộ dữ liệu hoạt động
-
----
-
-## Quy tắc quản lý người dùng
-
-Cấu trúc role hiện tại:
-
-- **Head**: quản lý toàn bộ hệ thống
-- **CSS Manager**: quản lý các nhóm dưới quyền
-- **CSS Team Leader**: quản lý staff trong nhóm
-- **Staff**: sử dụng hệ thống theo phạm vi được cấp
-
-Nguyên tắc:
-
-- Role cao hơn có quyền quản lý role thấp hơn.
-- Không cho role thấp tạo hoặc quản lý role cao hơn quyền của mình.
-- Hệ thống cần sẵn sàng để mở rộng phân quyền dữ liệu chi tiết hơn trong giai đoạn sau.
+- không để UI đọc Google Sheet trực tiếp khi người dùng mở trang
+- mọi dữ liệu phải đi qua sync job hoặc service backend có cache
+- production bắt buộc có login và phân quyền
+- không để secret lộ trong repo hoặc log
 
 ---
 
-## Cách vận hành hiện tại
+## 3. Các step đã hoàn thành
 
-### 1. Về dữ liệu
+### Step 1 — Nền tảng dashboard + auth + deploy
 
-- Dữ liệu gốc vẫn nằm ở Google Sheet.
-- Hệ thống sẽ đồng bộ dữ liệu từ nguồn này vào database nội bộ.
-- Dashboard hiển thị từ dữ liệu đã đồng bộ.
+Đã hoàn thành:
 
-### 2. Về người dùng
+- CRM chạy production trên `https://crm.icanwork.vn`
+- auth + session + user management 4 role:
+  - Head
+  - CSS Manager
+  - CSS Team Leader
+  - Staff
+- cấp user thật và staff thật theo danh sách CSS
+- deploy Docker ổn định, có sync loop, HTTPS, health check
 
-- Người dùng phải đăng nhập mới truy cập dashboard.
-- Quyền xem và quyền quản lý sẽ phụ thuộc vào role.
+### Step 2 — Restyle UI và shell vận hành
 
-### 3. Về production
+Đã hoàn thành:
 
-- Hệ thống đang chạy online trên domain chính thức.
-- Có thể tiếp tục cấu hình thêm user thật và phân quyền vận hành thực tế.
+- restyle CRM theo `Design_System.html`
+- chuyển UX từ filter-heavy sang menu-oriented
+- responsive mobile/tablet
+- dọn wording business-friendly cho CRM root và Ticket
+- đồng bộ shell / typography / card style giữa CRM và Ticket
+
+### Step 3 — Learner universe và workflow học viên
+
+Đã hoàn thành:
+
+- tách learner universe khỏi `dashboard_data`
+- learner journey dùng nguồn riêng từ Zeus
+- loại trial lesson ở tầng dữ liệu
+- nhóm khóa học lấy theo hierarchy thật rooted at `SpeakWell`
+- Live / LCMS / Journey cùng learner universe và cùng filter grammar
+- hồ sơ học viên, popup chi tiết, purchase history, learning milestones
+
+### Step 4 — Zeus hóa dữ liệu CRM
+
+Đã hoàn thành:
+
+- CSI live lấy trực tiếp từ Zeus DB
+- Dashboard / Students dùng population hợp nhất Zeus + legacy
+- có làm mờ dữ liệu thiếu coverage
+- renewal metrics ước tính từ order history target month
+- chuẩn hóa thêm các field như:
+  - `learning_pace`
+  - `activation_speed`
+  - `teacher_disruption_*`
+- thêm Zeus Analytics theo hướng action dashboard + drill-down về Students
+
+### Step 5 — LCMS thật
+
+Đã hoàn thành:
+
+- xác minh LCMS thật trong Zeus DB
+- nối LCMS summary thật vào student universe
+- nối LCMS detail thật vào hồ sơ học viên
+- fallback hợp lý khi thiếu mapping / coverage
+
+### Step 6 — Ticket submodule
+
+Đã hoàn thành:
+
+- Ticket chạy dưới `/ticket/`
+- update source 2025 SpeakWell-only + 2026 combined multi-source
+- wording compare 2025 vs 2026 rõ scope dữ liệu
+- thêm learner comparison, risk learners, student drill-down
+- thêm teacher-cost heuristic views cho lỗi kỹ thuật / lỗi giáo viên
+
+### Step 7 — Logic filter thời gian và trạng thái
+
+Đã hoàn thành:
+
+- bỏ filter `Quý` khỏi UI CRM root
+- nếu đã chọn `Tháng` thì khóa `Từ ngày / Đến ngày`
+- thêm filter `Trạng thái học viên = Active / Expired`
+- sửa month filter để không bị dính mặc định `2026-04`
+- sửa date-range nhiều tháng:
+  - target = snapshot tháng mới nhất của từng học viên trong khoảng
+  - base = tháng gần nhất trước target
+- tab CSI live nay đã được rà và siết lại:
+  - tôn trọng role scope thực
+  - tôn trọng time filter
+  - hỗ trợ `studentStatus` cho Active / Expired
 
 ---
 
-## Những việc không được làm trong phase hiện tại
+## 4. Trạng thái nghiệp vụ hiện tại
 
-- Không để dashboard đọc Google Sheet trực tiếp khi mở trang.
-- Không bỏ cơ chế đăng nhập ở môi trường production.
-- Không làm sai cấu trúc phân quyền 4 cấp đã thống nhất.
-- Không để dữ liệu vận hành phụ thuộc vào thao tác thủ công trên local.
-- Không đưa các thông tin nhạy cảm ra tài liệu công khai.
+CRM root hiện có các cụm chính:
+
+- Tổng quan
+- Sức khỏe học viên (CSI)
+- Danh sách học viên
+- Hồ sơ học viên
+- Hành trình học viên
+- Buổi học live
+- Bài tập LCMS
+- Gói học & gia hạn
+- Trung tâm điều hành
+- Zeus Analytics
+- Tài khoản / User Admin / Tiện ích
+- Phân hệ Ticket
+
+Các capability chính đã có:
+
+- login + role scope
+- learner drill-down
+- export PDF + file tabular cơ bản
+- popup / hồ sơ học viên / lịch sử mua hàng
+- LCMS thật trong learner detail
+- action dashboard + preset worklist
 
 ---
 
-## Việc nên làm tiếp theo
+## 5. Quy tắc bắt buộc
 
-### 1. Hoàn thiện quản lý người dùng
+- Không quay lại mô hình đọc trực tiếp Google Sheet trên frontend.
+- Không bỏ auth hoặc role scope ở production.
+- Không hiển thị dữ liệu thiếu coverage như dữ liệu đầy đủ.
+- Không đảo ngược business meaning của target/base, renewal, learner status.
+- Ticket phải tiếp tục là submodule dưới `/ticket/`, không tách rời domain.
+- CRM root và Ticket phải giữ cùng design language và action pattern.
 
-- thêm đổi mật khẩu
-- thêm reset mật khẩu
-- thêm tìm kiếm/lọc danh sách user
-- thêm lịch sử thao tác quản trị user
+---
 
-### 2. Hoàn thiện phân quyền dữ liệu
+## 6. Các bước còn mở
 
-- Head xem toàn bộ
-- Manager xem dữ liệu của team mình
-- Team Leader xem dữ liệu của nhóm mình
-- Staff xem đúng phạm vi cá nhân được cấp
+### Step 8 — Hoàn thiện audit cuối và ổn định vận hành
 
-### 3. Nâng cấp dashboard
+Các việc còn mở nhưng nhỏ hơn trước:
 
-- xuất Excel/CSV
-- xem drill-down danh sách học viên
-- tách dashboard thành các nhóm màn hình rõ hơn
+1. rà nốt wording / caption lẻ tẻ còn sót nếu phát sinh
+2. cân nhắc thêm badge/UI rõ hơn cho basis target/base ở nhiều chỗ nếu cần
+3. tiếp tục kiểm thử regression cho:
+   - month filter
+   - date range nhiều tháng
+   - CSI scope theo role
+   - Active / Expired
+4. bổ sung thêm runbook vận hành / backup / smoke test nếu cần formal hơn
 
-### 4. Vận hành ổn định hơn
+### Step 9 — Nâng độ sâu business nếu user yêu cầu thêm
 
-- bổ sung hướng dẫn vận hành
-- bổ sung backup dữ liệu
-- bổ sung monitoring cơ bản
-- bổ sung kiểm thử cho các luồng chính
+Tùy vòng tiếp theo có thể làm:
 
-### 5. Bảo mật production
+- siết sâu hơn logic renewal heuristics
+- nâng chất lượng explainability trong Zeus Analytics
+- mở rộng Ticket learner matching nếu có source identity tốt hơn
+- tăng coverage LCMS / lifecycle / teacher disruption nếu Zeus có rule chuẩn hơn
 
-- thay tài khoản mặc định bằng tài khoản thật
-- chuẩn hóa quản lý mật khẩu và quyền truy cập
-- siết chặt cấu hình production khi cần
+---
+
+## 7. Cách làm việc cho các vòng tiếp theo
+
+Mỗi thay đổi mới nên đi theo chuỗi:
+
+1. xác định rõ scope nghiệp vụ
+2. kiểm tra backend + frontend + dữ liệu live
+3. sửa ở local
+4. verify bằng API / HTML marker / smoke test
+5. deploy production
+6. cập nhật summary run và REQUESTS.md nếu thay đổi milestone
