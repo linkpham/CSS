@@ -22,10 +22,8 @@ services:
       - ./data:/app/data
       - ./conf:/app/conf:ro
     networks:
-      default:
-      proxy-net:
-        aliases:
-          - icc-crm-app
+      - crm-internal
+      - proxy-net
 
   sync:
     build:
@@ -44,9 +42,27 @@ services:
       - ./data:/app/data
       - ./conf:/app/conf:ro
     networks:
-      - default
+      - crm-internal
+
+  nginx:
+    image: nginx:alpine
+    container_name: icc-crm-nginx
+    restart: unless-stopped
+    ports:
+      - "8082:80"
+      - "4443:443"
+    volumes:
+      - ./nginx/conf.d:/etc/nginx/conf.d:ro
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      - /var/www/certbot:/var/www/certbot:ro
+    networks:
+      - crm-internal
+      - proxy-net
+    depends_on:
+      - app
 
 networks:
+  crm-internal:
   proxy-net:
     external: true
     name: zeus-dashboard_zeus-dashboard-network
