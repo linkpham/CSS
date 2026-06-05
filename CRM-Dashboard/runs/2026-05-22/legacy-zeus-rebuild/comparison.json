@@ -1,0 +1,1630 @@
+{
+  "detectedTargetMonth": {
+    "label": "2026-04",
+    "fromDate": "2026-04-01",
+    "toDate": "2026-04-30",
+    "total": 5054,
+    "diff": 0
+  },
+  "topMonthCandidates": [
+    {
+      "label": "2026-04",
+      "fromDate": "2026-04-01",
+      "toDate": "2026-04-30",
+      "total": 5054,
+      "diff": 0
+    },
+    {
+      "label": "2026-02",
+      "fromDate": "2026-02-01",
+      "toDate": "2026-02-28",
+      "total": 5109,
+      "diff": 55
+    },
+    {
+      "label": "2026-03",
+      "fromDate": "2026-03-01",
+      "toDate": "2026-03-31",
+      "total": 5291,
+      "diff": 237
+    },
+    {
+      "label": "2026-05",
+      "fromDate": "2026-05-01",
+      "toDate": "2026-05-31",
+      "total": 4807,
+      "diff": 247
+    },
+    {
+      "label": "2026-01",
+      "fromDate": "2026-01-01",
+      "toDate": "2026-01-31",
+      "total": 5324,
+      "diff": 270
+    },
+    {
+      "label": "2025-12",
+      "fromDate": "2025-12-01",
+      "toDate": "2025-12-31",
+      "total": 111,
+      "diff": 4943
+    }
+  ],
+  "baseMonth": {
+    "label": "2026-03",
+    "fromDate": "2026-03-01",
+    "toDate": "2026-03-31"
+  },
+  "comparison": {
+    "counts": {
+      "legacy": 5054,
+      "rebuilt": 5054,
+      "common": 5054,
+      "onlyLegacy": 0,
+      "onlyRebuilt": 0
+    },
+    "stats": {
+      "score_target": {
+        "exact": 5054,
+        "exact_pct": 100,
+        "within5": 5054,
+        "within5_pct": 100
+      },
+      "score_base": {
+        "exact": 4617,
+        "exact_pct": 91.4,
+        "within5": 4623,
+        "within5_pct": 91.5
+      },
+      "variance": {
+        "exact": 4804,
+        "exact_pct": 95.1,
+        "within5": 4818,
+        "within5_pct": 95.3
+      },
+      "target_category": {
+        "exact": 5054,
+        "exact_pct": 100,
+        "within5": 5054,
+        "within5_pct": 100
+      },
+      "base_category": {
+        "exact": 4616,
+        "exact_pct": 91.3,
+        "within5": 4616,
+        "within5_pct": 91.3
+      },
+      "movement_group": {
+        "exact": 4618,
+        "exact_pct": 91.4,
+        "within5": 4618,
+        "within5_pct": 91.4
+      },
+      "teacher_disruption_rate": {
+        "exact": 3790,
+        "exact_pct": 75,
+        "within5": 5054,
+        "within5_pct": 100
+      },
+      "unfinished_rate": {
+        "exact": 4715,
+        "exact_pct": 93.3,
+        "within5": 5054,
+        "within5_pct": 100
+      },
+      "activation_speed": {
+        "exact": 4644,
+        "exact_pct": 91.9,
+        "within5": 4644,
+        "within5_pct": 91.9
+      },
+      "renewal_status": {
+        "exact": 4644,
+        "exact_pct": 91.9,
+        "within5": 4644,
+        "within5_pct": 91.9
+      },
+      "renewal_product": {
+        "exact": 4644,
+        "exact_pct": 91.9,
+        "within5": 4644,
+        "within5_pct": 91.9
+      },
+      "lifecycle_status": {
+        "exact": 4644,
+        "exact_pct": 91.9,
+        "within5": 4644,
+        "within5_pct": 91.9
+      },
+      "management_health_score": {
+        "exact": 4982,
+        "exact_pct": 98.6,
+        "within5": 4982,
+        "within5_pct": 98.6
+      },
+      "learning_pace": {
+        "exact": 5054,
+        "exact_pct": 100,
+        "within5": 5054,
+        "within5_pct": 100
+      },
+      "teacher_disruption_cumulative": {
+        "exact": 2314,
+        "exact_pct": 45.8,
+        "within5": 5054,
+        "within5_pct": 100
+      }
+    },
+    "sampleMissingLegacy": [],
+    "sampleMissingRebuilt": [],
+    "mismatches": {
+      "score_target": [],
+      "score_base": [
+        {
+          "student_id": "1841",
+          "student_name": "Dũng Phan",
+          "legacy": 0,
+          "rebuilt": 57.1
+        },
+        {
+          "student_id": "2524",
+          "student_name": "Nora Lê",
+          "legacy": 0,
+          "rebuilt": 50
+        },
+        {
+          "student_id": "3081",
+          "student_name": "Hiếu Nguyễn",
+          "legacy": 0,
+          "rebuilt": 100
+        },
+        {
+          "student_id": "3173",
+          "student_name": "An Nguyễn",
+          "legacy": 0,
+          "rebuilt": 100
+        },
+        {
+          "student_id": "3591",
+          "student_name": "Thiên Trần",
+          "legacy": 0,
+          "rebuilt": 50
+        },
+        {
+          "student_id": "3683",
+          "student_name": "An Lê",
+          "legacy": 0,
+          "rebuilt": 100
+        },
+        {
+          "student_id": "3713",
+          "student_name": "Minh Trịnh",
+          "legacy": 0,
+          "rebuilt": 100
+        },
+        {
+          "student_id": "377",
+          "student_name": "Trần Tiến Đoàn",
+          "legacy": 100,
+          "rebuilt": 87.5
+        },
+        {
+          "student_id": "378",
+          "student_name": "Phan Hải Minh",
+          "legacy": 100,
+          "rebuilt": 87.5
+        },
+        {
+          "student_id": "380",
+          "student_name": "Phạm Khang Ninh",
+          "legacy": 87.5,
+          "rebuilt": 100
+        },
+        {
+          "student_id": "3865",
+          "student_name": "Linh Bùi",
+          "legacy": 0,
+          "rebuilt": 100
+        },
+        {
+          "student_id": "390",
+          "student_name": "Bùi Đoàn Huyền Phương",
+          "legacy": 91.7,
+          "rebuilt": 90
+        },
+        {
+          "student_id": "392",
+          "student_name": "Vũ Bảo Anh",
+          "legacy": 100,
+          "rebuilt": 25
+        },
+        {
+          "student_id": "394",
+          "student_name": "Lê Bá Anh Quân",
+          "legacy": 62.5,
+          "rebuilt": 66.7
+        },
+        {
+          "student_id": "410",
+          "student_name": "Nguyễn Hoàng Diệu Anh",
+          "legacy": 83.3,
+          "rebuilt": 85.7
+        },
+        {
+          "student_id": "412",
+          "student_name": "Vũ Nam Anh",
+          "legacy": 100,
+          "rebuilt": 90
+        },
+        {
+          "student_id": "420",
+          "student_name": "Đinh Khang Huy",
+          "legacy": 100,
+          "rebuilt": 71.4
+        },
+        {
+          "student_id": "422",
+          "student_name": "Hoàng Phương Thảo",
+          "legacy": 100,
+          "rebuilt": 80
+        },
+        {
+          "student_id": "423",
+          "student_name": "Nguyễn Hà Phương",
+          "legacy": 85.7,
+          "rebuilt": 71.4
+        },
+        {
+          "student_id": "426",
+          "student_name": "Nguyễn Minh Nhật",
+          "legacy": 25,
+          "rebuilt": 75
+        }
+      ],
+      "variance": [
+        {
+          "student_id": "1841",
+          "student_name": "Dũng Phan",
+          "legacy": 0,
+          "rebuilt": 42.9
+        },
+        {
+          "student_id": "2524",
+          "student_name": "Nora Lê",
+          "legacy": 0,
+          "rebuilt": 50
+        },
+        {
+          "student_id": "3591",
+          "student_name": "Thiên Trần",
+          "legacy": 0,
+          "rebuilt": 50
+        },
+        {
+          "student_id": "377",
+          "student_name": "Trần Tiến Đoàn",
+          "legacy": 0,
+          "rebuilt": 12.5
+        },
+        {
+          "student_id": "378",
+          "student_name": "Phan Hải Minh",
+          "legacy": 0,
+          "rebuilt": 12.5
+        },
+        {
+          "student_id": "380",
+          "student_name": "Phạm Khang Ninh",
+          "legacy": 0,
+          "rebuilt": -12.5
+        },
+        {
+          "student_id": "3865",
+          "student_name": "Linh Bùi",
+          "legacy": 0,
+          "rebuilt": -20
+        },
+        {
+          "student_id": "390",
+          "student_name": "Bùi Đoàn Huyền Phương",
+          "legacy": -6,
+          "rebuilt": -4.3
+        },
+        {
+          "student_id": "392",
+          "student_name": "Vũ Bảo Anh",
+          "legacy": -33.3,
+          "rebuilt": 41.7
+        },
+        {
+          "student_id": "394",
+          "student_name": "Lê Bá Anh Quân",
+          "legacy": 23.2,
+          "rebuilt": 19
+        },
+        {
+          "student_id": "410",
+          "student_name": "Nguyễn Hoàng Diệu Anh",
+          "legacy": 16.7,
+          "rebuilt": 14.3
+        },
+        {
+          "student_id": "412",
+          "student_name": "Vũ Nam Anh",
+          "legacy": -20,
+          "rebuilt": -10
+        },
+        {
+          "student_id": "420",
+          "student_name": "Đinh Khang Huy",
+          "legacy": -12.5,
+          "rebuilt": 16.1
+        },
+        {
+          "student_id": "422",
+          "student_name": "Hoàng Phương Thảo",
+          "legacy": 0,
+          "rebuilt": 20
+        },
+        {
+          "student_id": "423",
+          "student_name": "Nguyễn Hà Phương",
+          "legacy": 0,
+          "rebuilt": 14.3
+        },
+        {
+          "student_id": "426",
+          "student_name": "Nguyễn Minh Nhật",
+          "legacy": 75,
+          "rebuilt": 25
+        },
+        {
+          "student_id": "427",
+          "student_name": "Nguyễn Hữu Đạt",
+          "legacy": 0,
+          "rebuilt": 25
+        },
+        {
+          "student_id": "429",
+          "student_name": "Đào Anh Thư",
+          "legacy": 25,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "433",
+          "student_name": "Vũ Gia An",
+          "legacy": 14.3,
+          "rebuilt": 16.7
+        },
+        {
+          "student_id": "434",
+          "student_name": "Võ Hoàng Tước",
+          "legacy": 5.9,
+          "rebuilt": 0
+        }
+      ],
+      "target_category": [],
+      "base_category": [
+        {
+          "student_id": "1841",
+          "student_name": "Dũng Phan",
+          "legacy": "Mới",
+          "rebuilt": "1. Báo động (<60)"
+        },
+        {
+          "student_id": "2524",
+          "student_name": "Nora Lê",
+          "legacy": "Mới",
+          "rebuilt": "1. Báo động (<60)"
+        },
+        {
+          "student_id": "3081",
+          "student_name": "Hiếu Nguyễn",
+          "legacy": "Mới",
+          "rebuilt": "3. Khỏe mạnh (85-100)"
+        },
+        {
+          "student_id": "3173",
+          "student_name": "An Nguyễn",
+          "legacy": "Mới",
+          "rebuilt": "3. Khỏe mạnh (85-100)"
+        },
+        {
+          "student_id": "3591",
+          "student_name": "Thiên Trần",
+          "legacy": "Mới",
+          "rebuilt": "1. Báo động (<60)"
+        },
+        {
+          "student_id": "3683",
+          "student_name": "An Lê",
+          "legacy": "Mới",
+          "rebuilt": "3. Khỏe mạnh (85-100)"
+        },
+        {
+          "student_id": "3713",
+          "student_name": "Minh Trịnh",
+          "legacy": "Mới",
+          "rebuilt": "3. Khỏe mạnh (85-100)"
+        },
+        {
+          "student_id": "3833",
+          "student_name": "My Nguyễn",
+          "legacy": "Mới",
+          "rebuilt": "1. Báo động (<60)"
+        },
+        {
+          "student_id": "3865",
+          "student_name": "Linh Bùi",
+          "legacy": "Mới",
+          "rebuilt": "3. Khỏe mạnh (85-100)"
+        },
+        {
+          "student_id": "392",
+          "student_name": "Vũ Bảo Anh",
+          "legacy": "3. Khỏe mạnh (85-100)",
+          "rebuilt": "1. Báo động (<60)"
+        },
+        {
+          "student_id": "410",
+          "student_name": "Nguyễn Hoàng Diệu Anh",
+          "legacy": "2. Cần chú ý (60-84)",
+          "rebuilt": "3. Khỏe mạnh (85-100)"
+        },
+        {
+          "student_id": "420",
+          "student_name": "Đinh Khang Huy",
+          "legacy": "3. Khỏe mạnh (85-100)",
+          "rebuilt": "2. Cần chú ý (60-84)"
+        },
+        {
+          "student_id": "422",
+          "student_name": "Hoàng Phương Thảo",
+          "legacy": "3. Khỏe mạnh (85-100)",
+          "rebuilt": "2. Cần chú ý (60-84)"
+        },
+        {
+          "student_id": "423",
+          "student_name": "Nguyễn Hà Phương",
+          "legacy": "3. Khỏe mạnh (85-100)",
+          "rebuilt": "2. Cần chú ý (60-84)"
+        },
+        {
+          "student_id": "426",
+          "student_name": "Nguyễn Minh Nhật",
+          "legacy": "1. Báo động (<60)",
+          "rebuilt": "2. Cần chú ý (60-84)"
+        },
+        {
+          "student_id": "427",
+          "student_name": "Nguyễn Hữu Đạt",
+          "legacy": "3. Khỏe mạnh (85-100)",
+          "rebuilt": "2. Cần chú ý (60-84)"
+        },
+        {
+          "student_id": "429",
+          "student_name": "Đào Anh Thư",
+          "legacy": "2. Cần chú ý (60-84)",
+          "rebuilt": "3. Khỏe mạnh (85-100)"
+        },
+        {
+          "student_id": "433",
+          "student_name": "Vũ Gia An",
+          "legacy": "3. Khỏe mạnh (85-100)",
+          "rebuilt": "2. Cần chú ý (60-84)"
+        },
+        {
+          "student_id": "455",
+          "student_name": "Nguyễn Hoài Anh",
+          "legacy": "2. Cần chú ý (60-84)",
+          "rebuilt": "3. Khỏe mạnh (85-100)"
+        },
+        {
+          "student_id": "4568",
+          "student_name": "Thảo Trần",
+          "legacy": "Mới",
+          "rebuilt": "3. Khỏe mạnh (85-100)"
+        }
+      ],
+      "movement_group": [
+        {
+          "student_id": "1841",
+          "student_name": "Dũng Phan",
+          "legacy": "9. Mới: Khỏe mạnh (85-100)",
+          "rebuilt": "1. Cứu vãn thành công"
+        },
+        {
+          "student_id": "2524",
+          "student_name": "Nora Lê",
+          "legacy": "9. Mới: Khỏe mạnh (85-100)",
+          "rebuilt": "1. Cứu vãn thành công"
+        },
+        {
+          "student_id": "3081",
+          "student_name": "Hiếu Nguyễn",
+          "legacy": "9. Mới: Khỏe mạnh (85-100)",
+          "rebuilt": "3a. Ổn định (Khỏe mạnh)"
+        },
+        {
+          "student_id": "3173",
+          "student_name": "An Nguyễn",
+          "legacy": "9. Mới: Khỏe mạnh (85-100)",
+          "rebuilt": "3a. Ổn định (Khỏe mạnh)"
+        },
+        {
+          "student_id": "3591",
+          "student_name": "Thiên Trần",
+          "legacy": "9. Mới: Khỏe mạnh (85-100)",
+          "rebuilt": "1. Cứu vãn thành công"
+        },
+        {
+          "student_id": "3683",
+          "student_name": "An Lê",
+          "legacy": "9. Mới: Khỏe mạnh (85-100)",
+          "rebuilt": "3a. Ổn định (Khỏe mạnh)"
+        },
+        {
+          "student_id": "3713",
+          "student_name": "Minh Trịnh",
+          "legacy": "9. Mới: Khỏe mạnh (85-100)",
+          "rebuilt": "3a. Ổn định (Khỏe mạnh)"
+        },
+        {
+          "student_id": "3833",
+          "student_name": "My Nguyễn",
+          "legacy": "7. Mới: Báo động (<60)",
+          "rebuilt": "6. Nguy hiểm kéo dài"
+        },
+        {
+          "student_id": "3865",
+          "student_name": "Linh Bùi",
+          "legacy": "8. Mới: Cần chú ý (60-84)",
+          "rebuilt": "4. Dấu hiệu sa sút"
+        },
+        {
+          "student_id": "392",
+          "student_name": "Vũ Bảo Anh",
+          "legacy": "4. Dấu hiệu sa sút",
+          "rebuilt": "2. Có cải thiện (Chưa an toàn)"
+        },
+        {
+          "student_id": "410",
+          "student_name": "Nguyễn Hoàng Diệu Anh",
+          "legacy": "1. Cứu vãn thành công",
+          "rebuilt": "3a. Ổn định (Khỏe mạnh)"
+        },
+        {
+          "student_id": "420",
+          "student_name": "Đinh Khang Huy",
+          "legacy": "3a. Ổn định (Khỏe mạnh)",
+          "rebuilt": "1. Cứu vãn thành công"
+        },
+        {
+          "student_id": "422",
+          "student_name": "Hoàng Phương Thảo",
+          "legacy": "3a. Ổn định (Khỏe mạnh)",
+          "rebuilt": "1. Cứu vãn thành công"
+        },
+        {
+          "student_id": "423",
+          "student_name": "Nguyễn Hà Phương",
+          "legacy": "3a. Ổn định (Khỏe mạnh)",
+          "rebuilt": "1. Cứu vãn thành công"
+        },
+        {
+          "student_id": "427",
+          "student_name": "Nguyễn Hữu Đạt",
+          "legacy": "3a. Ổn định (Khỏe mạnh)",
+          "rebuilt": "1. Cứu vãn thành công"
+        },
+        {
+          "student_id": "429",
+          "student_name": "Đào Anh Thư",
+          "legacy": "1. Cứu vãn thành công",
+          "rebuilt": "3a. Ổn định (Khỏe mạnh)"
+        },
+        {
+          "student_id": "433",
+          "student_name": "Vũ Gia An",
+          "legacy": "3a. Ổn định (Khỏe mạnh)",
+          "rebuilt": "1. Cứu vãn thành công"
+        },
+        {
+          "student_id": "455",
+          "student_name": "Nguyễn Hoài Anh",
+          "legacy": "1. Cứu vãn thành công",
+          "rebuilt": "3a. Ổn định (Khỏe mạnh)"
+        },
+        {
+          "student_id": "4568",
+          "student_name": "Thảo Trần",
+          "legacy": "9. Mới: Khỏe mạnh (85-100)",
+          "rebuilt": "3a. Ổn định (Khỏe mạnh)"
+        },
+        {
+          "student_id": "461",
+          "student_name": "Lê Nhật Minh",
+          "legacy": "3b. Ổn định (Cần chú ý)",
+          "rebuilt": "4. Dấu hiệu sa sút"
+        }
+      ],
+      "teacher_disruption_rate": [
+        {
+          "student_id": "10482",
+          "student_name": "Trần Xuân Nhi",
+          "legacy": 0.5,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "10483",
+          "student_name": "Trần Đình Nguyên",
+          "legacy": 0.5,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "10489",
+          "student_name": "Nguyễn Anh Khoa",
+          "legacy": 0.3333,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "10548",
+          "student_name": "Châu Sa",
+          "legacy": 0.5,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1367",
+          "student_name": "Anh Khổng",
+          "legacy": 0.125,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1374",
+          "student_name": "Thịnh Nguyễn",
+          "legacy": 0.3333,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1380",
+          "student_name": "Lâm Nguyễn",
+          "legacy": 0.3333,
+          "rebuilt": 0.17
+        },
+        {
+          "student_id": "1386",
+          "student_name": "Việt Anh Trịnh Minh",
+          "legacy": 0.2,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1387",
+          "student_name": "Lâm Hà",
+          "legacy": 0.3333,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1394",
+          "student_name": "Hòa Lê",
+          "legacy": 0.16670000000000001,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1398",
+          "student_name": "Phú Nguyễn",
+          "legacy": 0.25,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1419",
+          "student_name": "An Trần",
+          "legacy": 0.7778,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1420",
+          "student_name": "Hân Lưu",
+          "legacy": 0.2,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1421",
+          "student_name": "Bảo Vương",
+          "legacy": 0.16670000000000001,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1425",
+          "student_name": "Anh Nguyễn",
+          "legacy": 0.2,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "144",
+          "student_name": "Đoàn Phúc Quỳnh Lâm",
+          "legacy": 0.125,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1446",
+          "student_name": "Anh Lê Nguyễn Phương",
+          "legacy": 0.25,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "146",
+          "student_name": "Trần Ngọc Diệp",
+          "legacy": 0.1429,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1465",
+          "student_name": "Nikulin Arsenii",
+          "legacy": 0.1429,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1467",
+          "student_name": "Tạ Khánh Linh",
+          "legacy": 0.25,
+          "rebuilt": 0
+        }
+      ],
+      "unfinished_rate": [
+        {
+          "student_id": "1375",
+          "student_name": "Vy Lê",
+          "legacy": 0.5,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1396",
+          "student_name": "Quân Lưu",
+          "legacy": 0.5,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1420",
+          "student_name": "Hân Lưu",
+          "legacy": 0.25,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1452",
+          "student_name": "Thư Ngô",
+          "legacy": 0.3333,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1453",
+          "student_name": "Tú Bảo",
+          "legacy": 0.0909,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1458",
+          "student_name": "Gia Đinh",
+          "legacy": 0.16670000000000001,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1465",
+          "student_name": "Nikulin Arsenii",
+          "legacy": 0.16670000000000001,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1478",
+          "student_name": "Bình Đỗ",
+          "legacy": 0.1,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1485",
+          "student_name": "Đoàn Nguyễn",
+          "legacy": 0.25,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1507",
+          "student_name": "Dũng Nguyễn",
+          "legacy": 0.3333,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1531",
+          "student_name": "Anh Phùng",
+          "legacy": 0.3333,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1600",
+          "student_name": "An Nguyễn",
+          "legacy": 1,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1610",
+          "student_name": "Chi Hương",
+          "legacy": 0.4,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1639",
+          "student_name": "Quang Tạ",
+          "legacy": 0.3333,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1641",
+          "student_name": "Giang Nguyễn",
+          "legacy": 0.2,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1645",
+          "student_name": "Phúc Nguyễn",
+          "legacy": 0.2,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1649",
+          "student_name": "Khải Nguyễn",
+          "legacy": 0.16670000000000001,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1774",
+          "student_name": "Anh Nguyễn",
+          "legacy": 0.2,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1780",
+          "student_name": "Quyên Đặng",
+          "legacy": 0.2,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1785",
+          "student_name": "An Lê",
+          "legacy": 0.5,
+          "rebuilt": 0
+        }
+      ],
+      "activation_speed": [
+        {
+          "student_id": "1841",
+          "student_name": "Dũng Phan",
+          "legacy": "Thiếu ngày",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "2524",
+          "student_name": "Nora Lê",
+          "legacy": "Thiếu ngày",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "3081",
+          "student_name": "Hiếu Nguyễn",
+          "legacy": "Thiếu ngày",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "3173",
+          "student_name": "An Nguyễn",
+          "legacy": "Thiếu ngày",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "3591",
+          "student_name": "Thiên Trần",
+          "legacy": "Thiếu ngày",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "3683",
+          "student_name": "An Lê",
+          "legacy": "Thiếu ngày",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "3713",
+          "student_name": "Minh Trịnh",
+          "legacy": "Thiếu ngày",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "3833",
+          "student_name": "My Nguyễn",
+          "legacy": "Thiếu ngày",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "3865",
+          "student_name": "Linh Bùi",
+          "legacy": "Thiếu ngày",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "4568",
+          "student_name": "Thảo Trần",
+          "legacy": "Thiếu ngày",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "5311",
+          "student_name": "Trúc Trần",
+          "legacy": "Thiếu ngày",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "5626",
+          "student_name": "Châu Bảo",
+          "legacy": "Thiếu ngày",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "5785",
+          "student_name": "Nam Doãn",
+          "legacy": "Thiếu ngày",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "6680",
+          "student_name": "Nguyễn Ngọc Linh",
+          "legacy": "Thiếu ngày",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "6688",
+          "student_name": "Đỗ Minh Nhật",
+          "legacy": "Thiếu ngày",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "6696",
+          "student_name": "Lê Thị Cẩm Tú",
+          "legacy": "Thiếu ngày",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "6698",
+          "student_name": "Lê hiểu Lam",
+          "legacy": "Thiếu ngày",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "6701",
+          "student_name": "Nguyễn Thị Thân",
+          "legacy": "Thiếu ngày",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "6706",
+          "student_name": "Đặng Hoàng Phúc",
+          "legacy": "Thiếu ngày",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "6728",
+          "student_name": "Lê Trà My",
+          "legacy": "Thiếu ngày",
+          "rebuilt": ""
+        }
+      ],
+      "renewal_status": [
+        {
+          "student_id": "1841",
+          "student_name": "Dũng Phan",
+          "legacy": "Bán mới",
+          "rebuilt": "⏳ Chưa gia hạn"
+        },
+        {
+          "student_id": "2524",
+          "student_name": "Nora Lê",
+          "legacy": "Bán mới",
+          "rebuilt": "⏳ Chưa gia hạn"
+        },
+        {
+          "student_id": "3081",
+          "student_name": "Hiếu Nguyễn",
+          "legacy": "Bán mới",
+          "rebuilt": "⏳ Chưa gia hạn"
+        },
+        {
+          "student_id": "3173",
+          "student_name": "An Nguyễn",
+          "legacy": "Bán mới",
+          "rebuilt": "⏳ Chưa gia hạn"
+        },
+        {
+          "student_id": "3591",
+          "student_name": "Thiên Trần",
+          "legacy": "Bán mới",
+          "rebuilt": "⏳ Chưa gia hạn"
+        },
+        {
+          "student_id": "3683",
+          "student_name": "An Lê",
+          "legacy": "Bán mới",
+          "rebuilt": "⏳ Chưa gia hạn"
+        },
+        {
+          "student_id": "3713",
+          "student_name": "Minh Trịnh",
+          "legacy": "Bán mới",
+          "rebuilt": "⏳ Chưa gia hạn"
+        },
+        {
+          "student_id": "3833",
+          "student_name": "My Nguyễn",
+          "legacy": "Bán mới",
+          "rebuilt": "⏳ Chưa gia hạn"
+        },
+        {
+          "student_id": "3865",
+          "student_name": "Linh Bùi",
+          "legacy": "Bán mới",
+          "rebuilt": "⏳ Chưa gia hạn"
+        },
+        {
+          "student_id": "4568",
+          "student_name": "Thảo Trần",
+          "legacy": "Bán mới",
+          "rebuilt": "⏳ Chưa gia hạn"
+        },
+        {
+          "student_id": "5311",
+          "student_name": "Trúc Trần",
+          "legacy": "Bán mới",
+          "rebuilt": "⏳ Chưa gia hạn"
+        },
+        {
+          "student_id": "5626",
+          "student_name": "Châu Bảo",
+          "legacy": "Bán mới",
+          "rebuilt": "⏳ Chưa gia hạn"
+        },
+        {
+          "student_id": "5785",
+          "student_name": "Nam Doãn",
+          "legacy": "Bán mới",
+          "rebuilt": "⏳ Chưa gia hạn"
+        },
+        {
+          "student_id": "6680",
+          "student_name": "Nguyễn Ngọc Linh",
+          "legacy": "Bán mới",
+          "rebuilt": "⏳ Chưa gia hạn"
+        },
+        {
+          "student_id": "6688",
+          "student_name": "Đỗ Minh Nhật",
+          "legacy": "Bán mới",
+          "rebuilt": "⏳ Chưa gia hạn"
+        },
+        {
+          "student_id": "6696",
+          "student_name": "Lê Thị Cẩm Tú",
+          "legacy": "Bán mới",
+          "rebuilt": "⏳ Chưa gia hạn"
+        },
+        {
+          "student_id": "6698",
+          "student_name": "Lê hiểu Lam",
+          "legacy": "Bán mới",
+          "rebuilt": "⏳ Chưa gia hạn"
+        },
+        {
+          "student_id": "6701",
+          "student_name": "Nguyễn Thị Thân",
+          "legacy": "Bán mới",
+          "rebuilt": "⏳ Chưa gia hạn"
+        },
+        {
+          "student_id": "6706",
+          "student_name": "Đặng Hoàng Phúc",
+          "legacy": "Bán mới",
+          "rebuilt": "⏳ Chưa gia hạn"
+        },
+        {
+          "student_id": "6728",
+          "student_name": "Lê Trà My",
+          "legacy": "Bán mới",
+          "rebuilt": "⏳ Chưa gia hạn"
+        }
+      ],
+      "renewal_product": [
+        {
+          "student_id": "1841",
+          "student_name": "Dũng Phan",
+          "legacy": "Onboarding",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "2524",
+          "student_name": "Nora Lê",
+          "legacy": "Onboarding",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "3081",
+          "student_name": "Hiếu Nguyễn",
+          "legacy": "Onboarding",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "3173",
+          "student_name": "An Nguyễn",
+          "legacy": "Onboarding",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "3591",
+          "student_name": "Thiên Trần",
+          "legacy": "Onboarding",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "3683",
+          "student_name": "An Lê",
+          "legacy": "Onboarding",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "3713",
+          "student_name": "Minh Trịnh",
+          "legacy": "Onboarding",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "3833",
+          "student_name": "My Nguyễn",
+          "legacy": "Onboarding",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "3865",
+          "student_name": "Linh Bùi",
+          "legacy": "Onboarding",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "4568",
+          "student_name": "Thảo Trần",
+          "legacy": "Onboarding",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "5311",
+          "student_name": "Trúc Trần",
+          "legacy": "Onboarding",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "5626",
+          "student_name": "Châu Bảo",
+          "legacy": "Onboarding",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "5785",
+          "student_name": "Nam Doãn",
+          "legacy": "Onboarding",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "6680",
+          "student_name": "Nguyễn Ngọc Linh",
+          "legacy": "Onboarding",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "6688",
+          "student_name": "Đỗ Minh Nhật",
+          "legacy": "Onboarding",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "6696",
+          "student_name": "Lê Thị Cẩm Tú",
+          "legacy": "Onboarding",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "6698",
+          "student_name": "Lê hiểu Lam",
+          "legacy": "Onboarding",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "6701",
+          "student_name": "Nguyễn Thị Thân",
+          "legacy": "Onboarding",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "6706",
+          "student_name": "Đặng Hoàng Phúc",
+          "legacy": "Onboarding",
+          "rebuilt": ""
+        },
+        {
+          "student_id": "6728",
+          "student_name": "Lê Trà My",
+          "legacy": "Onboarding",
+          "rebuilt": ""
+        }
+      ],
+      "lifecycle_status": [
+        {
+          "student_id": "1841",
+          "student_name": "Dũng Phan",
+          "legacy": "1. Mới (Onboarding)",
+          "rebuilt": "4. Hết gói (Gap chờ phí)"
+        },
+        {
+          "student_id": "2524",
+          "student_name": "Nora Lê",
+          "legacy": "1. Mới (Onboarding)",
+          "rebuilt": "4. Hết gói (Gap chờ phí)"
+        },
+        {
+          "student_id": "3081",
+          "student_name": "Hiếu Nguyễn",
+          "legacy": "1. Mới (Onboarding)",
+          "rebuilt": "4. Hết gói (Gap chờ phí)"
+        },
+        {
+          "student_id": "3173",
+          "student_name": "An Nguyễn",
+          "legacy": "1. Mới (Onboarding)",
+          "rebuilt": "4. Hết gói (Gap chờ phí)"
+        },
+        {
+          "student_id": "3591",
+          "student_name": "Thiên Trần",
+          "legacy": "1. Mới (Onboarding)",
+          "rebuilt": "4. Hết gói (Gap chờ phí)"
+        },
+        {
+          "student_id": "3683",
+          "student_name": "An Lê",
+          "legacy": "1. Mới (Onboarding)",
+          "rebuilt": "4. Hết gói (Gap chờ phí)"
+        },
+        {
+          "student_id": "3713",
+          "student_name": "Minh Trịnh",
+          "legacy": "1. Mới (Onboarding)",
+          "rebuilt": "4. Hết gói (Gap chờ phí)"
+        },
+        {
+          "student_id": "3833",
+          "student_name": "My Nguyễn",
+          "legacy": "1. Mới (Onboarding)",
+          "rebuilt": "4. Hết gói (Gap chờ phí)"
+        },
+        {
+          "student_id": "3865",
+          "student_name": "Linh Bùi",
+          "legacy": "1. Mới (Onboarding)",
+          "rebuilt": "4. Hết gói (Gap chờ phí)"
+        },
+        {
+          "student_id": "4568",
+          "student_name": "Thảo Trần",
+          "legacy": "1. Mới (Onboarding)",
+          "rebuilt": "4. Hết gói (Gap chờ phí)"
+        },
+        {
+          "student_id": "5311",
+          "student_name": "Trúc Trần",
+          "legacy": "1. Mới (Onboarding)",
+          "rebuilt": "4. Hết gói (Gap chờ phí)"
+        },
+        {
+          "student_id": "5626",
+          "student_name": "Châu Bảo",
+          "legacy": "1. Mới (Onboarding)",
+          "rebuilt": "4. Hết gói (Gap chờ phí)"
+        },
+        {
+          "student_id": "5785",
+          "student_name": "Nam Doãn",
+          "legacy": "1. Mới (Onboarding)",
+          "rebuilt": "4. Hết gói (Gap chờ phí)"
+        },
+        {
+          "student_id": "6680",
+          "student_name": "Nguyễn Ngọc Linh",
+          "legacy": "1. Mới (Onboarding)",
+          "rebuilt": "4. Hết gói (Gap chờ phí)"
+        },
+        {
+          "student_id": "6688",
+          "student_name": "Đỗ Minh Nhật",
+          "legacy": "1. Mới (Onboarding)",
+          "rebuilt": "4. Hết gói (Gap chờ phí)"
+        },
+        {
+          "student_id": "6696",
+          "student_name": "Lê Thị Cẩm Tú",
+          "legacy": "1. Mới (Onboarding)",
+          "rebuilt": "4. Hết gói (Gap chờ phí)"
+        },
+        {
+          "student_id": "6698",
+          "student_name": "Lê hiểu Lam",
+          "legacy": "1. Mới (Onboarding)",
+          "rebuilt": "4. Hết gói (Gap chờ phí)"
+        },
+        {
+          "student_id": "6701",
+          "student_name": "Nguyễn Thị Thân",
+          "legacy": "1. Mới (Onboarding)",
+          "rebuilt": "4. Hết gói (Gap chờ phí)"
+        },
+        {
+          "student_id": "6706",
+          "student_name": "Đặng Hoàng Phúc",
+          "legacy": "1. Mới (Onboarding)",
+          "rebuilt": "4. Hết gói (Gap chờ phí)"
+        },
+        {
+          "student_id": "6728",
+          "student_name": "Lê Trà My",
+          "legacy": "1. Mới (Onboarding)",
+          "rebuilt": "4. Hết gói (Gap chờ phí)"
+        }
+      ],
+      "management_health_score": [
+        {
+          "student_id": "1363",
+          "student_name": "Trang Trần",
+          "legacy": 75,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1594",
+          "student_name": "Bảo Phạm",
+          "legacy": 25,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1836",
+          "student_name": "Đức Phan",
+          "legacy": 25,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "2125",
+          "student_name": "Kiệt Võ",
+          "legacy": 87.5,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "2186",
+          "student_name": "Anh Nguyễn",
+          "legacy": 50,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "2263",
+          "student_name": "Dương Vũ",
+          "legacy": 62.5,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "2349",
+          "student_name": "Lâm Vũ",
+          "legacy": 50,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "2380",
+          "student_name": "Châu Tạ",
+          "legacy": 75,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "2421",
+          "student_name": "BÁCH ĐÀO",
+          "legacy": 75,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "2478",
+          "student_name": "KHANG LƯU",
+          "legacy": 85.7,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "2642",
+          "student_name": "Anh Nguyễn",
+          "legacy": 33.3,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "2677",
+          "student_name": "Hằng Nguyễn",
+          "legacy": 88.9,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "2693",
+          "student_name": "Dũng Nguyễn",
+          "legacy": 100,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "2963",
+          "student_name": "Phương Nguyễn",
+          "legacy": 85.7,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "3016",
+          "student_name": "Ngọc Phạm",
+          "legacy": 50,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "3129",
+          "student_name": "Sơn Lê",
+          "legacy": 28.6,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "3171",
+          "student_name": "Nhi Nguyễn",
+          "legacy": 25,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "3270",
+          "student_name": "Quý Công",
+          "legacy": 25,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "3286",
+          "student_name": "Anh Đinh",
+          "legacy": 33.3,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "3335",
+          "student_name": "Minh Bùi",
+          "legacy": 100,
+          "rebuilt": 0
+        }
+      ],
+      "learning_pace": [],
+      "teacher_disruption_cumulative": [
+        {
+          "student_id": "10482",
+          "student_name": "Trần Xuân Nhi",
+          "legacy": 1,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "10483",
+          "student_name": "Trần Đình Nguyên",
+          "legacy": 1,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "10489",
+          "student_name": "Nguyễn Anh Khoa",
+          "legacy": 0.5,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "10548",
+          "student_name": "Châu Sa",
+          "legacy": 1,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1361",
+          "student_name": "Vân Phạm",
+          "legacy": 0.0417,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1365",
+          "student_name": "Chi Lương",
+          "legacy": 0.0741,
+          "rebuilt": 0.037
+        },
+        {
+          "student_id": "1367",
+          "student_name": "Anh Khổng",
+          "legacy": 0.1304,
+          "rebuilt": 0.0435
+        },
+        {
+          "student_id": "1374",
+          "student_name": "Thịnh Nguyễn",
+          "legacy": 0.0909,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1375",
+          "student_name": "Vy Lê",
+          "legacy": 0.0833,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1378",
+          "student_name": "Hoàng Đào Châu Anh",
+          "legacy": 0.035699999999999996,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1380",
+          "student_name": "Lâm Nguyễn",
+          "legacy": 0.10339999999999999,
+          "rebuilt": 0.0345
+        },
+        {
+          "student_id": "1381",
+          "student_name": "Thư Lê",
+          "legacy": 0.023799999999999998,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1382",
+          "student_name": "Giang Lưu",
+          "legacy": 0.0588,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1386",
+          "student_name": "Việt Anh Trịnh Minh",
+          "legacy": 0.0667,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1387",
+          "student_name": "Lâm Hà",
+          "legacy": 0.23079999999999998,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1388",
+          "student_name": "Tiến Nguyễn",
+          "legacy": 0.035699999999999996,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1389",
+          "student_name": "Nam Phạm",
+          "legacy": 0.1333,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1390",
+          "student_name": "Quang Nguyễn",
+          "legacy": 0.07690000000000001,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1394",
+          "student_name": "Hòa Lê",
+          "legacy": 0.07690000000000001,
+          "rebuilt": 0
+        },
+        {
+          "student_id": "1396",
+          "student_name": "Quân Lưu",
+          "legacy": 0.07690000000000001,
+          "rebuilt": 0
+        }
+      ]
+    }
+  }
+}

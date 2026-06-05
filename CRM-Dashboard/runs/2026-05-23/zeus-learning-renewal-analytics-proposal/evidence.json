@@ -1,0 +1,24 @@
+{
+  "sampleSize": 6391,
+  "withTargetCoverage": 6141,
+  "renewed": 273,
+  "renewRatePct": 4.3,
+  "newSale": 216,
+  "newSaleRatePct": 3.4,
+  "renewalRevenueVnd": 7375020516,
+  "riskSignals": {
+    "learningPaceLe0_5": {"count": 1465, "renewRatePct": 1.5, "avgTarget": 50.9},
+    "liveSuccessLe50": {"count": 714, "renewRatePct": 1.4, "avgTarget": 17.5},
+    "movementBad5or6": {"count": 743, "renewRatePct": 1.6, "avgTarget": 19.1},
+    "expired": {"count": 1203, "renewRatePct": 2.2, "avgTarget": 71.2},
+    "remainingLe0": {"count": 1271, "renewRatePct": 2.1, "avgTarget": 71.2},
+    "remainingLe0AndTargetLt60": {"count": 333, "renewRatePct": 1.2, "avgTarget": 12.2, "avgPace": 0.11},
+    "classSize1to2": {"count": 385, "renewRatePct": 1.0, "avgTarget": 83.1}
+  },
+  "positiveSignals": {
+    "learningPaceGt2": {"count": 379, "renewRatePct": 11.3},
+    "target81to100": {"count": 4735, "renewRatePct": 4.9},
+    "active": {"count": 4938, "renewRatePct": 5.0}
+  },
+  "note": "Evidence derived from production unified students dataset backed by Zeus CSI + learner journey + purchase history."
+}
